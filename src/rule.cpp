@@ -26,4 +26,7 @@ void rule::depends_on(rule& other) {
 
     m_depends.push_back(&other);
 }
+
+cyclic_dependency::cyclic_dependency(const rule& parent, const rule& child)
+    : error("{} already depends on {}", parent.name(), child.name()) {}
 }

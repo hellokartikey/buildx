@@ -1,8 +1,10 @@
-#ifndef BX_RULE_HPP
-#define BX_RULE_HPP
+#ifndef BUILDX_RULE_HPP
+#define BUILDX_RULE_HPP
 
 #include <string>
 #include <vector>
+
+#include <buildx/exceptions.hpp>
 
 namespace bx {
 class context;
@@ -34,6 +36,11 @@ protected:
 private:
     std::string m_name;
     std::vector<rule*> m_depends;
+};
+
+class cyclic_dependency: public error {
+public:
+    cyclic_dependency(const rule& parent, const rule& child);
 };
 }
 
