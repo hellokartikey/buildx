@@ -10,10 +10,11 @@
 using boost::process::environment::find_executable;
 
 namespace bx {
-step::step() : m_phony(true) {}
+step::step(std::uint64_t id) : m_id(id), m_phony(true) {}
 
-step::step(const std::string& exe)
-    : m_phony(false)
+step::step(std::uint64_t id, const std::string& exe)
+    : m_id(id)
+    , m_phony(false)
     , m_exe(find_executable(exe)) {
     if (m_exe.empty()) throw executable_not_found(exe);
 }
@@ -30,6 +31,7 @@ bool step::is_ready() const {
 bool step::is_direct_dependency(const step& other) const {
     return std::ranges::find(m_depends, &other) != m_depends.end();
 }
+
 bool step::is_dependency(const step& other) const {
     if (is_direct_dependency(other)) return true;
     return std::ranges::any_of(
@@ -37,6 +39,8 @@ bool step::is_dependency(const step& other) const {
         [&] (const auto* step) { return step->is_dependency(other); }
     );
 }
+
+std::uint64_t step::id() const { return m_id; }
 
 const std::filesystem::path& step::exe() const { return m_exe; }
 
@@ -52,7 +56,7 @@ step& step::flags(const std::vector<std::string>& flags) {
     return *this;
 }
 
-step& step::depends_on(step& other) {
+step& step::depends_on(const step& other) {
     if (other.is_dependency(*this)) throw cycle_detected(*this, other);
     m_depends.push_back(&other);
     return *this;
@@ -60,7 +64,7 @@ step& step::depends_on(step& other) {
 
 int step::rc() const { return m_rc; }
 
-step::async_rc step::async_exec() {
+step::task step::async_exec() {
     if (not is_ready()) throw pending_dependencies(*this);
 
     if (is_phony()) co_return 0;
@@ -77,6 +81,7 @@ step::async_rc step::async_exec() {
 
     co_return m_rc;
 }
+
 step::executable_not_found::executable_not_found(const std::string exe)
     : error("executable {:?} not found.", exe) {}
 

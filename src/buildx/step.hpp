@@ -32,10 +32,10 @@ public:
         execution_error(const step& step);
     };
 
-    using async_rc = boost::cobalt::task<int>;
+    using task = boost::cobalt::task<int>;
 
-    step();
-    step(const std::string& exe);
+    step(std::uint64_t id);
+    step(std::uint64_t id, const std::string& exe);
 
     ~step() = default;
 
@@ -52,25 +52,29 @@ public:
     bool is_direct_dependency(const step& other) const;
     bool is_dependency(const step& other) const;
 
+    std::uint64_t id() const;
     const std::filesystem::path& exe() const;
     const std::vector<std::string>& flags() const;
 
     step& flag(const std::string& flag);
     step& flags(const std::vector<std::string>& flags);
 
-    step& depends_on(step& other);
+    template <typename... T>
+    step& depends_on(const T&... others) { return (depends_on(others), ...); }
+    step& depends_on(const step& other);
 
     int rc() const;
-    async_rc async_exec();
+    task async_exec();
 
 private:
+    std::uint64_t m_id{};
     std::vector<const step*> m_depends;
 
     std::filesystem::path m_exe;
     std::vector<std::string> m_flags;
 
     int m_rc = -1;
-    bool m_phony;
+    bool m_phony{};
 };
 }
 

@@ -1,7 +1,9 @@
 target_sources(
     libbx
     PRIVATE
+        c_family.cpp
         exceptions.cpp
+        executor.cpp
         gcc.cpp
         rule.cpp
         step.cpp
@@ -10,10 +12,12 @@ target_sources(
     PUBLIC FILE_SET HEADERS FILES
         buildx/c_family.hpp
         buildx/exceptions.hpp
+        buildx/executor.hpp
         buildx/gcc.hpp
         buildx/rule.hpp
         buildx/step.hpp
         buildx/target.hpp
+        buildx/this_build.hpp
         buildx/toolchain.hpp
 )
 
