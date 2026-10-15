@@ -52,12 +52,15 @@ public:
     bool is_direct_dependency(const step& other) const;
     bool is_dependency(const step& other) const;
 
-    std::uint64_t id() const;
-    const std::filesystem::path& exe() const;
-    const std::vector<std::string>& flags() const;
+    std::uint64_t get_id() const;
+    const std::filesystem::path& get_executable() const;
+    const std::vector<std::string>& get_flags() const;
+    const std::string& get_message() const;
 
     step& flag(const std::string& flag);
     step& flags(const std::vector<std::string>& flags);
+
+    step& message(const std::string& message);
 
     template <typename... T>
     step& depends_on(const T&... others) { return (depends_on(others), ...); }
@@ -72,6 +75,8 @@ private:
 
     std::filesystem::path m_exe;
     std::vector<std::string> m_flags;
+
+    std::string m_message;
 
     int m_rc = -1;
     bool m_phony{};

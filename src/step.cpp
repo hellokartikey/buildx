@@ -7,6 +7,8 @@
 #include <boost/process/process.hpp>
 #include <boost/process/environment.hpp>
 
+#include <spdlog/spdlog.h>
+
 using boost::process::environment::find_executable;
 
 namespace bx {
@@ -40,11 +42,13 @@ bool step::is_dependency(const step& other) const {
     );
 }
 
-std::uint64_t step::id() const { return m_id; }
+std::uint64_t step::get_id() const { return m_id; }
 
-const std::filesystem::path& step::exe() const { return m_exe; }
+const std::filesystem::path& step::get_executable() const { return m_exe; }
 
-const std::vector<std::string>& step::flags() const { return m_flags; }
+const std::vector<std::string>& step::get_flags() const { return m_flags; }
+
+const std::string& step::get_message() const { return m_message; }
 
 step& step::flag(const std::string& flag) {
     m_flags.push_back(flag);
@@ -53,6 +57,11 @@ step& step::flag(const std::string& flag) {
 
 step& step::flags(const std::vector<std::string>& flags) {
     m_flags.append_range(flags);
+    return *this;
+}
+
+step& step::message(const std::string& message) {
+    m_message = message;
     return *this;
 }
 
@@ -66,19 +75,17 @@ int step::rc() const { return m_rc; }
 
 step::task step::async_exec() {
     if (not is_ready()) throw pending_dependencies(*this);
-
+    if (not m_message.empty()) spdlog::info("{}", m_message);
     if (is_phony()) co_return 0;
 
     auto process = boost::process::process(
         co_await boost::cobalt::this_coro::executor,
-        exe(),
-        flags()
+        get_executable(),
+        get_flags()
     );
 
     m_rc = co_await process.async_wait(boost::cobalt::use_task);
-
     if (m_rc != 0) throw execution_error(*this);
-
     co_return m_rc;
 }
 
@@ -88,13 +95,20 @@ step::executable_not_found::executable_not_found(const std::string exe)
 step::cycle_detected::cycle_detected(const step& parent, const step& child)
     : error(
         "cycle detected from {:?} to {:?}.",
-        parent.exe().string(),
-        child.exe().string()
+        parent.get_executable().string(),
+        child.get_executable().string()
     ) {}
 
 step::pending_dependencies::pending_dependencies(const step& step)
-    : error("{:?} dependencies are still pending.", step.exe().string()) {}
+    : error(
+        "{:?} dependencies are still pending.",
+        step.get_executable().string()
+    ) {}
 
 step::execution_error::execution_error(const step& step)
-    : error("{:?} returned code {}.", step.exe().string(), step.rc()) {}
+    : error(
+        "{:?} returned code {}.",
+        step.get_executable().string(),
+        step.rc()
+    ) {}
 }

@@ -5,7 +5,8 @@ project(buildx)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD 26)
 
-find_package(Boost COMPONENTS Process Cobalt)
+find_package(Boost COMPONENTS Process Cobalt REQUIRED)
+find_package(spdlog REQUIRED)
 
 add_library(libbx)
 set_target_properties(libbx PROPERTIES OUTPUT_NAME bx)

@@ -17,14 +17,14 @@ step& executor::make_step(const std::string& exe) {
 step& executor::operator[](std::uint64_t id) {
     return *std::ranges::find_if(
         m_steps,
-        [=] (const auto& step) { return step.id() == id; }
+        [=] (const auto& step) { return step.get_id() == id; }
     );
 }
 
 const step& executor::operator[](std::uint64_t id) const {
     return *std::ranges::find_if(
         m_steps,
-        [=] (const auto& step) { return step.id() == id; }
+        [=] (const auto& step) { return step.get_id() == id; }
     );
 }
 
