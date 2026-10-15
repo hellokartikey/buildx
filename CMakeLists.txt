@@ -10,6 +10,6 @@ find_package(Boost COMPONENTS Process Cobalt)
 add_library(libbx)
 set_target_properties(libbx PROPERTIES OUTPUT_NAME bx)
 
-add_executable(bx src/main.cpp)
+add_executable(bx src/build.cpp)
 
 add_subdirectory(src)

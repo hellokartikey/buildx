@@ -5,11 +5,13 @@ target_sources(
         exceptions.cpp
         executor.cpp
         gcc.cpp
+        main.cpp
         rule.cpp
         step.cpp
         toolchain.cpp
 
     PUBLIC FILE_SET HEADERS FILES
+        buildx/build.hpp
         buildx/c_family.hpp
         buildx/exceptions.hpp
         buildx/executor.hpp

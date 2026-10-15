@@ -2,23 +2,12 @@
 
 #include <boost/cobalt/main.hpp>
 
+#include <buildx/build.hpp>
 #include <buildx/this_build.hpp>
 
 boost::cobalt::main co_main(int argc, char** argv) {
     try {
-        auto& first = bx::this_build::executor
-            .make_step("echo")
-            .flag("Hello, World!");
-
-        auto& sleep = bx::this_build::executor
-            .make_step("sleep")
-            .flag("5");
-
-        auto& second = bx::this_build::executor
-            .make_step("echo")
-            .flag("Bye, World!")
-            .depends_on(sleep, first);
-
+        bx::build();
         co_await bx::this_build::executor.async_exec();
     } catch (bx::error& e) {
         std::println(stderr, "buildx error: {}", e.what());
