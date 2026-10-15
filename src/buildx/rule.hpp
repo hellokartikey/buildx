@@ -5,12 +5,10 @@
 #include <vector>
 
 #include <buildx/exceptions.hpp>
+#include <buildx/executor.hpp>
+#include <buildx/step.hpp>
 
 namespace bx {
-class context;
-class executor;
-class step;
-
 class rule {
 public:
     rule(const std::string& name);

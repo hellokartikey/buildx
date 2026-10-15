@@ -1,21 +1,21 @@
 #ifndef BUILDX_TARGET_HPP
 #define BUILDX_TARGET_HPP
 
-#include "rule.hpp"
-
+#include <concepts>
 #include <memory>
 
-namespace bx {
-class compiler;
-class file_set;
+#include <buildx/rule.hpp>
+#include <buildx/toolchain.hpp>
+#include <buildx/nothing.hpp>
 
+namespace bx {
 class target : public rule {
 public:
     target(const std::string& name);
     ~target() override = default;
 
-    template <typename S>
-    S& use(this S& self, const compiler& compiler);
+    template <std::derived_from<tc::toolchain> T, typename... Args>
+    T& use(Args&&... args) { return *(m_tc = std::make_unique<T>(args...)); }
 
 private:
     std::polymorphic<compiler> m_compiler;

@@ -2,6 +2,7 @@ target_sources(
     libbx
     PRIVATE
         c_family.cpp
+        context.cpp
         exceptions.cpp
         executor.cpp
         gcc.cpp
@@ -13,6 +14,7 @@ target_sources(
     PUBLIC FILE_SET HEADERS FILES
         buildx/build.hpp
         buildx/c_family.hpp
+        buildx/context.hpp
         buildx/exceptions.hpp
         buildx/executor.hpp
         buildx/gcc.hpp
