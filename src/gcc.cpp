@@ -12,7 +12,7 @@ void gcc::apply(define_kv flag) {
 }
 
 void gcc::apply(include_f flag) {
-    m_cc.push_back(std::format("-I{}", flag.v.string()));
+    m_cc.push_back(std::format("-I{}", flag.v));
 }
 
 void gcc::apply(prefix_f flag) { m_exe = std::format("{}gcc", flag.v); }

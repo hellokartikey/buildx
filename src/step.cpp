@@ -39,6 +39,8 @@ bool step::is_dependency(const step& other) const {
     );
 }
 
+const std::filesystem::path& step::executable() const { return m_exe; }
+
 step& step::flag(const std::string& flag) {
     m_flags.push_back(flag);
     return *this;
@@ -49,10 +51,14 @@ step& step::flags(const std::vector<std::string>& flags) {
     return *this;
 }
 
+const std::vector<std::string>& step::flags() const { return m_flags; }
+
 step& step::message(const std::string& message) {
     m_message = message;
     return *this;
 }
+
+const std::string& step::message() const { return m_message; }
 
 step& step::depends_on(const step& other) {
     if (other.is_dependency(*this)) throw cycle_detected(*this, other);
@@ -94,22 +100,11 @@ step::executable_not_found::executable_not_found(const std::string exe)
     : error("executable {:?} not found.", exe) {}
 
 step::cycle_detected::cycle_detected(const step& parent, const step& child)
-    : error(
-        "cycle detected from {:?} to {:?}.",
-        parent.m_exe.string(),
-        child.m_exe.string()
-    ) {}
+    : error("cycle detected from {:?} to {:?}.", parent.m_exe, child.m_exe) {}
 
 step::pending_dependencies::pending_dependencies(const step& step)
-    : error(
-        "{:?} dependencies are still pending.",
-        step.m_exe.string()
-    ) {}
+    : error("{:?} dependencies are still pending.", step.m_exe) {}
 
 step::execution_error::execution_error(const step& step)
-    : error(
-        "{:?} returned code {}.",
-        step.m_exe.string(),
-        step.rc()
-    ) {}
+    : error("{:?} returned code {}.", step.m_exe, step.rc()) {}
 }

@@ -51,6 +51,8 @@ public:
     bool is_direct_dependency(const step& other) const;
     bool is_dependency(const step& other) const;
 
+    const std::filesystem::path& executable() const;
+
     step& flag(const std::string& flag);
     step& flags(const std::vector<std::string>& flags);
     const std::vector<std::string>& flags() const;

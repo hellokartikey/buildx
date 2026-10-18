@@ -45,13 +45,13 @@ void executor::exec_all() {
     namespace cobalt = boost::cobalt;
     auto async_exec = [] (step& step) -> cobalt::task<int> {
         if (not step.is_ready()) throw step::pending_dependencies(step);
-        if (not step.m_message.empty()) std::println("[+] {}", step.m_message);
+        if (not step.message().empty()) std::println("[+] {}", step.message());
         if (step.is_phony()) co_return step.m_rc = 0;
 
         auto process = boost::process::process(
             co_await boost::cobalt::this_coro::executor,
-            step.m_exe,
-            step.m_flags
+            step.executable(),
+            step.flags()
         );
 
         step.m_rc = co_await process.async_wait(boost::cobalt::use_task);
