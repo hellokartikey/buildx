@@ -5,11 +5,8 @@
 #include <string>
 #include <vector>
 
-#include "exceptions.hpp"
-
-namespace bx {
-class step;
-}
+#include <buildx/exceptions.hpp>
+#include <buildx/step.hpp>
 
 namespace bx::tc {
 class toolchain {
@@ -31,14 +28,8 @@ public:
         const std::vector<std::string>& flags
     );
 
-    virtual step& link_archive(
-        const std::vector<std::filesystem::path>& objects,
-        const std::filesystem::path& output,
-        const std::vector<std::string>& flags
-    );
-
-    virtual step& link_module(
-        const std::vector<std::filesystem::path>& objects,
+    virtual step& compile_module(
+        const std::filesystem::path& source,
         const std::filesystem::path& output,
         const std::vector<std::string>& flags
     );
@@ -50,6 +41,18 @@ public:
     );
 
     virtual step& link_shared(
+        const std::vector<std::filesystem::path>& objects,
+        const std::filesystem::path& output,
+        const std::vector<std::string>& flags
+    );
+
+    virtual step& link_archive(
+        const std::vector<std::filesystem::path>& objects,
+        const std::filesystem::path& output,
+        const std::vector<std::string>& flags
+    );
+
+    virtual step& link_module(
         const std::vector<std::filesystem::path>& objects,
         const std::filesystem::path& output,
         const std::vector<std::string>& flags
