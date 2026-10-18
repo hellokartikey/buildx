@@ -60,6 +60,34 @@ step& step::depends_on(const step& other) {
     return *this;
 }
 
+step& step::in_file(const std::filesystem::path& file) {
+    m_in.push_back(file);
+    return *this;
+}
+
+step& step::in_files(const std::vector<std::filesystem::path>& files) {
+    m_in.append_range(files);
+    return *this;
+}
+
+const std::vector<std::filesystem::path>& step::in_files() const {
+    return m_in;
+}
+
+step& step::out_file(const std::filesystem::path& file) {
+    m_out.push_back(file);
+    return *this;
+}
+
+step& step::out_files(const std::vector<std::filesystem::path>& files) {
+    m_out.append_range(files);
+    return *this;
+}
+
+const std::vector<std::filesystem::path>& step::out_files() const {
+    return m_out;
+}
+
 int step::rc() const { return m_rc; }
 
 step::executable_not_found::executable_not_found(const std::string exe)

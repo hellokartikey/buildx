@@ -4,6 +4,7 @@
 #include <list>
 
 #include <buildx/step.hpp>
+#include <buildx/rule.hpp>
 
 namespace bx {
 class executor {
@@ -27,6 +28,7 @@ public:
     executor& concurrency(std::uint64_t concurrency);
 
     void exec_all();
+    void build_steps(const rule& rule);
 
 private:
     std::list<step> m_steps;

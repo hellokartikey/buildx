@@ -2,7 +2,8 @@
 
 #include <algorithm>
 
-#include "buildx/exceptions.hpp"
+#include <buildx/exceptions.hpp>
+#include <buildx/this_build.hpp>
 
 namespace bx {
 rule::rule(const std::string& name) : m_name(name) {}
@@ -20,13 +21,22 @@ bool rule::is_dependency(const rule& other) const {
             [&] (const auto* r) { return r->is_dependency(other); });
 }
 
-void rule::depends_on(rule& other) {
+void rule::depends_on(const rule& other) {
     if (other.is_dependency(*this))
         throw cyclic_dependency(*this, other);
 
     m_depends.push_back(&other);
 }
 
-cyclic_dependency::cyclic_dependency(const rule& parent, const rule& child)
-    : error("{} already depends on {}", parent.name(), child.name()) {}
+void rule::build_all_steps(step& first, step& last) const {
+    build_steps(first, last);
+    for (auto* dep : m_depends) {
+        dep->build_all_steps(this_build::executor.make_step(), first);
+    }
+}
+
+rule::cyclic_dependency::cyclic_dependency(
+    const rule& parent,
+    const rule& child
+) : error("{} already depends on {}", parent.name(), child.name()) {}
 }

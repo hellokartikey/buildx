@@ -1,6 +1,8 @@
 #include <buildx/gcc.hpp>
 
 namespace bx::tc {
+std::string gcc::name() const { return "gcc"; }
+
 void gcc::apply(std_f flag) { m_cc.push_back(std::format("-std=c{}", flag.v)); }
 
 void gcc::apply(define_f flag) { m_cc.push_back(std::format("-D{}", flag.v)); }

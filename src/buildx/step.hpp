@@ -53,12 +53,22 @@ public:
 
     step& flag(const std::string& flag);
     step& flags(const std::vector<std::string>& flags);
+    const std::vector<std::string>& flags() const;
 
     step& message(const std::string& message);
+    const std::string& message() const;
 
-    template <typename... T>
+    template <std::same_as<step>... T>
     step& depends_on(const T&... others) { return (depends_on(others), ...); }
     step& depends_on(const step& other);
+
+    step& in_file(const std::filesystem::path& file);
+    step& in_files(const std::vector<std::filesystem::path>& files);
+    const std::vector<std::filesystem::path>& in_files() const;
+
+    step& out_file(const std::filesystem::path& file);
+    step& out_files(const std::vector<std::filesystem::path>& files);
+    const std::vector<std::filesystem::path>& out_files() const;
 
     int rc() const;
 
@@ -68,6 +78,9 @@ private:
 
     std::filesystem::path m_exe;
     std::vector<std::string> m_flags;
+
+    std::vector<std::filesystem::path> m_in;
+    std::vector<std::filesystem::path> m_out;
 
     std::string m_message;
 

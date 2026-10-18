@@ -46,7 +46,7 @@ void executor::exec_all() {
     auto async_exec = [] (step& step) -> cobalt::task<int> {
         if (not step.is_ready()) throw step::pending_dependencies(step);
         if (not step.m_message.empty()) std::println("[+] {}", step.m_message);
-        if (step.is_phony()) co_return 0;
+        if (step.is_phony()) co_return step.m_rc = 0;
 
         auto process = boost::process::process(
             co_await boost::cobalt::this_coro::executor,
@@ -75,5 +75,9 @@ void executor::exec_all() {
             )
         );
     }
+}
+
+void executor::build_steps(const rule& rule) {
+    rule.build_all_steps(make_step(), make_step());
 }
 }

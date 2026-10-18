@@ -5,12 +5,17 @@
 #include <vector>
 
 #include <buildx/exceptions.hpp>
-#include <buildx/executor.hpp>
 #include <buildx/step.hpp>
 
 namespace bx {
+class executor;
 class rule {
 public:
+    class cyclic_dependency: public error {
+    public:
+        cyclic_dependency(const rule& parent, const rule& child);
+    };
+
     rule(const std::string& name);
     virtual ~rule() = default;
 
@@ -25,20 +30,18 @@ public:
     bool is_direct_dependency(const rule& other) const;
     bool is_dependency(const rule& other) const;
 
-    void depends_on(rule& other);
+    void depends_on(const rule& other);
 
 protected:
     virtual void build_steps(step& first, step& last) const = 0;
-    friend step& build_rule(const rule& rule, executor& exec);
+
+private:
+    friend class executor;
+    void build_all_steps(step& first, step& last) const;
 
 private:
     std::string m_name;
-    std::vector<rule*> m_depends;
-};
-
-class cyclic_dependency: public error {
-public:
-    cyclic_dependency(const rule& parent, const rule& child);
+    std::vector<const rule*> m_depends;
 };
 }
 

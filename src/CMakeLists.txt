@@ -4,11 +4,14 @@ target_sources(
         c_family.cpp
         context.cpp
         exceptions.cpp
+        executable.cpp
         executor.cpp
         gcc.cpp
+        phony.cpp
         main.cpp
         rule.cpp
         step.cpp
+        target.cpp
         toolchain.cpp
 
     PUBLIC FILE_SET HEADERS FILES
@@ -16,8 +19,10 @@ target_sources(
         buildx/c_family.hpp
         buildx/context.hpp
         buildx/exceptions.hpp
+        buildx/executable.hpp
         buildx/executor.hpp
         buildx/gcc.hpp
+        buildx/phony.hpp
         buildx/rule.hpp
         buildx/step.hpp
         buildx/target.hpp

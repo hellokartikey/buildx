@@ -41,4 +41,10 @@ context& context::scratch_path_prefix(const std::filesystem::path& path) {
     m_scratch = path;
     return *this;
 }
+
+context& context::install(const rule& rule) {
+    m_install.depends_on(rule);
+    return *this;
+}
+const phony& context::install() const { return m_install; }
 }

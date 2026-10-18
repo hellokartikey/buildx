@@ -9,7 +9,7 @@ public:
     template <typename... Args>
     gcc(Args&&... args) { (apply(args),...); }
 
-    ~gcc() = default;
+    std::string name() const override;
 
     void apply(std_f flag) override;
     void apply(define_f flag) override;

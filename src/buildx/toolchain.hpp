@@ -11,6 +11,11 @@
 namespace bx::tc {
 class toolchain {
 public:
+    class not_implemented : public error {
+    public:
+        not_implemented(const std::string& name, const std::string& method);
+    };
+
     toolchain() = default;
     virtual ~toolchain() = default;
 
@@ -19,49 +24,44 @@ public:
     virtual step& compile_static(
         const std::filesystem::path& source,
         const std::filesystem::path& output,
-        const std::vector<std::string>& flags
-    );
+        const std::vector<std::string>& flags = {}
+    ) const;
 
     virtual step& compile_shared(
         const std::filesystem::path& source,
         const std::filesystem::path& output,
-        const std::vector<std::string>& flags
-    );
+        const std::vector<std::string>& flags = {}
+    ) const;
 
     virtual step& compile_module(
         const std::filesystem::path& source,
         const std::filesystem::path& output,
-        const std::vector<std::string>& flags
-    );
+        const std::vector<std::string>& flags = {}
+    ) const;
 
     virtual step& link_static(
         const std::vector<std::filesystem::path>& objects,
         const std::filesystem::path& output,
-        const std::vector<std::string>& flags
-    );
+        const std::vector<std::string>& flags = {}
+    ) const;
 
     virtual step& link_shared(
         const std::vector<std::filesystem::path>& objects,
         const std::filesystem::path& output,
-        const std::vector<std::string>& flags
-    );
+        const std::vector<std::string>& flags = {}
+    ) const;
 
     virtual step& link_archive(
         const std::vector<std::filesystem::path>& objects,
         const std::filesystem::path& output,
-        const std::vector<std::string>& flags
-    );
+        const std::vector<std::string>& flags = {}
+    ) const;
 
     virtual step& link_module(
         const std::vector<std::filesystem::path>& objects,
         const std::filesystem::path& output,
-        const std::vector<std::string>& flags
-    );
-};
-
-class not_implemented : public error {
-public:
-    not_implemented(const std::string& name, const std::string& method);
+        const std::vector<std::string>& flags = {}
+    ) const;
 };
 }
 

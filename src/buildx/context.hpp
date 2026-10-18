@@ -5,6 +5,7 @@
 #include <list>
 
 #include <buildx/rule.hpp>
+#include <buildx/phony.hpp>
 
 namespace bx {
 class context {
@@ -38,8 +39,11 @@ public:
     template <typename T, typename... Args>
     T& add(Args&&... args) {
         auto* ptr = m_rules.emplace_back(std::make_unique<T>(args...)).get();
-        return static_cast<T*>(ptr);
+        return *static_cast<T*>(ptr);
     }
+
+    context& install(const rule& rule);
+    const phony& install() const;
 
 private:
     std::filesystem::path m_root = std::filesystem::current_path();
@@ -50,6 +54,7 @@ private:
     std::filesystem::path m_scratch = m_root / ".bx-out";
 
     std::list<std::unique_ptr<rule>> m_rules;
+    phony m_install{"install"};
 };
 }
 
