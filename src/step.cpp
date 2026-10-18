@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <filesystem>
+#include <ranges>
 
 #define BOOST_PROCESS_USE_STD_FS
 #include <boost/process/environment.hpp>
@@ -80,6 +81,22 @@ const std::vector<std::filesystem::path>& step::in_files() const {
     return m_in;
 }
 
+step& step::in_flag(const std::filesystem::path& file) {
+    in_file(file);
+    flag(file.string());
+    return *this;
+}
+
+step& step::in_flags(const std::vector<std::filesystem::path>& files) {
+    in_files(files);
+    flags(
+        files
+        | std::views::transform([] (auto& f) { return f.string(); })
+        | std::ranges::to<std::vector>()
+    );
+    return *this;
+}
+
 step& step::out_file(const std::filesystem::path& file) {
     m_out.push_back(file);
     return *this;
@@ -92,6 +109,22 @@ step& step::out_files(const std::vector<std::filesystem::path>& files) {
 
 const std::vector<std::filesystem::path>& step::out_files() const {
     return m_out;
+}
+
+step& step::out_flag(const std::filesystem::path& file) {
+    out_file(file);
+    flag(file.string());
+    return *this;
+}
+
+step& step::out_flags(const std::vector<std::filesystem::path>& files) {
+    out_files(files);
+    flags(
+        files
+        | std::views::transform([] (auto& f) { return f.string(); })
+        | std::ranges::to<std::vector>()
+    );
+    return *this;
 }
 
 int step::rc() const { return m_rc; }

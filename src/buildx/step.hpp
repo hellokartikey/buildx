@@ -74,9 +74,15 @@ public:
     step& in_files(const std::vector<std::filesystem::path>& files);
     const std::vector<std::filesystem::path>& in_files() const;
 
+    step& in_flag(const std::filesystem::path& file);
+    step& in_flags(const std::vector<std::filesystem::path>& files);
+
     step& out_file(const std::filesystem::path& file);
     step& out_files(const std::vector<std::filesystem::path>& files);
     const std::vector<std::filesystem::path>& out_files() const;
+
+    step& out_flag(const std::filesystem::path& file);
+    step& out_flags(const std::vector<std::filesystem::path>& files);
 
     int rc() const;
 

@@ -34,15 +34,16 @@ step& gcc::compile_static(
 ) const {
     return this_build::executor
         .make_step("gcc")
-        .message("Compiling C object {} using {}", output.filename(), name())
+        .message(
+            "{} build static {}",
+            name(),
+            std::filesystem::relative(output))
         .flag("-c")
         .flags(m_cc)
         .flags(flags)
-        .in_file(source)
-        .flag(source.string())
+        .in_flag(source)
         .flag("-o")
-        .out_file(output)
-        .flag(output.string());
+        .out_flag(output);
 }
 
 step& gcc::link_static(
@@ -53,16 +54,14 @@ step& gcc::link_static(
     auto to_string = [] (auto& object) { return object.string(); };
     return this_build::executor
         .make_step("gcc")
-        .message("Linking C executable {} using {}", output.filename(), name())
+        .message(
+            "{} link executable {}",
+            name(),
+            std::filesystem::relative(output))
         .flags(m_cc)
         .flags(flags)
-        .in_files(objects)
-        .flags(
-            objects
-                | std::views::transform(to_string)
-                | std::ranges::to<std::vector>())
+        .in_flags(objects)
         .flag("-o")
-        .out_file(output)
-        .flag(output.string());
+        .out_flag(output);
 }
 }

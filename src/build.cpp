@@ -10,6 +10,7 @@ void bx::build() {
     auto& exe = ctx
         .add<executable>("test")
         .file(ctx.path("test") / "main.c")
+        .file(ctx.path("test") / "foo.c")
         .use<tc::gcc>();
 
     ctx.install(exe);
