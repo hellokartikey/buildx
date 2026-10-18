@@ -8,8 +8,6 @@
 namespace bx {
 class executor {
 public:
-    using task = boost::cobalt::task<void>;
-
     executor(std::uint64_t concurrency = 1);
     ~executor() = default;
 
@@ -28,7 +26,7 @@ public:
     std::uint64_t concurrency() const;
     executor& concurrency(std::uint64_t concurrency);
 
-    task async_exec();
+    void exec_all();
 
 private:
     std::list<step> m_steps;

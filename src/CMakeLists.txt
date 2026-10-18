@@ -25,5 +25,5 @@ target_sources(
         buildx/toolchain.hpp
 )
 
-target_link_libraries(libbx PUBLIC Boost::process Boost::cobalt spdlog::spdlog)
-target_link_libraries(bx PUBLIC libbx)
+target_link_libraries(libbx PRIVATE Boost::process Boost::cobalt)
+target_link_libraries(bx PRIVATE libbx)

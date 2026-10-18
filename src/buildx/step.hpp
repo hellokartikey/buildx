@@ -7,9 +7,8 @@
 
 #include <buildx/exceptions.hpp>
 
-#include <boost/cobalt/task.hpp>
-
 namespace bx {
+class executor;
 class step {
 public:
     class executable_not_found : public error {
@@ -32,7 +31,7 @@ public:
         execution_error(const step& step);
     };
 
-    using task = boost::cobalt::task<int>;
+    friend class executor;
 
     step(std::uint64_t id);
     step(std::uint64_t id, const std::string& exe);
@@ -52,11 +51,6 @@ public:
     bool is_direct_dependency(const step& other) const;
     bool is_dependency(const step& other) const;
 
-    std::uint64_t get_id() const;
-    const std::filesystem::path& get_executable() const;
-    const std::vector<std::string>& get_flags() const;
-    const std::string& get_message() const;
-
     step& flag(const std::string& flag);
     step& flags(const std::vector<std::string>& flags);
 
@@ -67,7 +61,6 @@ public:
     step& depends_on(const step& other);
 
     int rc() const;
-    task async_exec();
 
 private:
     std::uint64_t m_id{};

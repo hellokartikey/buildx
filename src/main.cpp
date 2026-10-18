@@ -8,12 +8,12 @@
 boost::cobalt::main co_main(int argc, char** argv) {
     try {
         bx::build();
-        co_await bx::this_build::executor.async_exec();
+        bx::this_build::executor.exec_all();
     } catch (bx::error& e) {
-        std::println(stderr, "buildx error: {}", e.what());
+        std::println(stderr, "[-] buildx error: {}", e.what());
         co_return 1;
     } catch (std::exception& e) {
-        std::println(stderr, "error: {}", e.what());
+        std::println(stderr, "[-] error: {}", e.what());
         co_return 2;
     }
 
