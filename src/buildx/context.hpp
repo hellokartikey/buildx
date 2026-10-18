@@ -2,10 +2,11 @@
 #define BUILDX_CONTEXT_HPP
 
 #include <filesystem>
+#include <list>
+
+#include <buildx/rule.hpp>
 
 namespace bx {
-class rule;
-
 class context {
 public:
     context() = default;
@@ -20,19 +21,25 @@ public:
     const std::filesystem::path& root() const;
 
     const std::filesystem::path& prefix() const;
-    context& set_prefix(const std::filesystem::path& path);
+    context& prefix(const std::filesystem::path& path);
 
     const std::filesystem::path& binary_path() const;
-    context& set_binary_path(const std::filesystem::path& path);
+    context& binary_path(const std::filesystem::path& path);
 
     const std::filesystem::path& include_path() const;
-    context& set_include_path(const std::filesystem::path& path);
+    context& include_path(const std::filesystem::path& path);
 
     const std::filesystem::path& library_path() const;
-    context& set_library_path(const std::filesystem::path& path);
+    context& library_path(const std::filesystem::path& path);
 
     std::filesystem::path scratch_path(const rule& rule) const;
-    context& set_scratch_path_prefix(const std::filesystem::path& path);
+    context& scratch_path_prefix(const std::filesystem::path& path);
+
+    template <typename T, typename... Args>
+    T& add(Args&&... args) {
+        auto* ptr = m_rules.emplace_back(std::make_unique<T>(args...)).get();
+        return static_cast<T*>(ptr);
+    }
 
 private:
     std::filesystem::path m_root = std::filesystem::current_path();
@@ -41,6 +48,8 @@ private:
     std::filesystem::path m_include = m_prefix / "include";
     std::filesystem::path m_library = m_prefix / "lib";
     std::filesystem::path m_scratch = m_root / ".bx-out";
+
+    std::list<std::unique_ptr<rule>> m_rules;
 };
 }
 
