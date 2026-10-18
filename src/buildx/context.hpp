@@ -20,6 +20,7 @@ public:
     context& operator=(context&&) = delete;
 
     const std::filesystem::path& root() const;
+    std::filesystem::path path(const std::string& path) const;
 
     const std::filesystem::path& prefix() const;
     context& prefix(const std::filesystem::path& path);
@@ -51,7 +52,7 @@ private:
     std::filesystem::path m_binary = m_prefix / "bin";
     std::filesystem::path m_include = m_prefix / "include";
     std::filesystem::path m_library = m_prefix / "lib";
-    std::filesystem::path m_scratch = m_root / ".bx-out";
+    std::filesystem::path m_scratch = m_root / ".bx-cache";
 
     std::list<std::unique_ptr<rule>> m_rules;
     phony m_install{"install"};

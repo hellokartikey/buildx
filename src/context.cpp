@@ -5,6 +5,10 @@
 namespace bx {
 const std::filesystem::path& context::root() const { return m_root; }
 
+std::filesystem::path context::path(const std::string& path) const {
+    return m_root / path;
+}
+
 const std::filesystem::path& context::prefix() const { return m_prefix; }
 
 context& context::prefix(const std::filesystem::path& path) {

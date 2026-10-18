@@ -22,6 +22,18 @@ public:
     void apply(ar_f flag) override;
     void apply(md_f flag) override;
 
+    step& compile_static(
+        const std::filesystem::path& source,
+        const std::filesystem::path& output,
+        const std::vector<std::string>& flags = {}
+    ) const override;
+
+    step& link_static(
+        const std::vector<std::filesystem::path>& objects,
+        const std::filesystem::path& output,
+        const std::vector<std::string>& flags = {}
+    ) const override;
+
 private:
     std::string m_exe = "gcc";
 

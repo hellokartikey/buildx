@@ -48,6 +48,12 @@ void executor::exec_all() {
         if (not step.message().empty()) std::println("[+] {}", step.message());
         if (step.is_phony()) co_return step.m_rc = 0;
 
+        for (auto& out : step.out_files()) {
+            if (auto dir = out.parent_path(); !std::filesystem::exists(dir)) {
+                std::filesystem::create_directories(dir);
+            }
+        }
+
         auto process = boost::process::process(
             co_await boost::cobalt::this_coro::executor,
             step.executable(),
