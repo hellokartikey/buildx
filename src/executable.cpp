@@ -21,6 +21,7 @@ void executable::compile_steps(step& first, step& last) const {
         auto& step = tc()
             .compile_static(file, output)
             .depends_on(first);
+
         objects.push_back(&step);
     }
 
@@ -31,5 +32,7 @@ void executable::compile_steps(step& first, step& last) const {
             | std::views::join
             | std::ranges::to<std::vector>(),
             ctx.binary_path() / name());
+
+    for (auto* object : objects) { link.depends_on(*object); }
 }
 }

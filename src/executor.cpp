@@ -11,6 +11,8 @@
 #define BOOST_PROCESS_USE_STD_FS
 #include <boost/process/process.hpp>
 
+#include <buildx/this_build.hpp>
+
 namespace bx {
 executor::executor(std::uint64_t concurrency) : m_concurrency(concurrency) {}
 
@@ -54,6 +56,12 @@ void executor::exec_all() {
             }
         }
 
+        if (this_build::context.verbose()) {
+            std::print(stderr, "{} ", step.executable());
+            for (auto& flag : step.flags()) std::print(stderr, "{} ", flag);
+            std::println(stderr);
+        }
+
         auto process = boost::process::process(
             co_await boost::cobalt::this_coro::executor,
             step.executable(),
@@ -70,7 +78,7 @@ void executor::exec_all() {
     };
 
     while (not std::ranges::all_of(m_steps, &step::is_done)) {
-        boost::cobalt::run(
+        cobalt::run(
             join(
                 m_steps
                     | std::views::filter(std::not_fn(&step::is_done))

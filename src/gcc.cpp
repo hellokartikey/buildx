@@ -1,13 +1,11 @@
 #include <buildx/gcc.hpp>
 
-#include <ranges>
-
 #include <buildx/this_build.hpp>
 
 namespace bx::tc {
 std::string gcc::name() const { return "gcc"; }
 
-void gcc::apply(std_f flag) { m_cc.push_back(std::format("-std=c{}", flag.v)); }
+void gcc::apply(std_f flag) { m_cc.push_back(std::format("-std=gnu{}", flag.v)); }
 
 void gcc::apply(define_f flag) { m_cc.push_back(std::format("-D{}", flag.v)); }
 
@@ -33,9 +31,9 @@ step& gcc::compile_static(
     const std::vector<std::string>& flags
 ) const {
     return this_build::executor
-        .make_step("gcc")
+        .make_step(m_exe)
         .message(
-            "{} build static {}",
+            "{} compile static {}",
             name(),
             std::filesystem::relative(output))
         .flag("-c")
@@ -51,9 +49,8 @@ step& gcc::link_static(
     const std::filesystem::path& output,
     const std::vector<std::string>& flags
 ) const {
-    auto to_string = [] (auto& object) { return object.string(); };
     return this_build::executor
-        .make_step("gcc")
+        .make_step(m_exe)
         .message(
             "{} link executable {}",
             name(),

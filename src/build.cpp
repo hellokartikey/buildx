@@ -11,7 +11,7 @@ void bx::build() {
         .add<executable>("test")
         .file(ctx.path("test") / "main.c")
         .file(ctx.path("test") / "foo.c")
-        .use<tc::gcc>();
+        .use<tc::gcc>(tc::gcc::std(23), tc::gcc::prefix("x86_64-linux-gnu-"));
 
     ctx.install(exe);
 }

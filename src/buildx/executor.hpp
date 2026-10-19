@@ -2,6 +2,7 @@
 #define BUILDX_EXECUTOR_HPP
 
 #include <list>
+#include <thread>
 
 #include <buildx/step.hpp>
 #include <buildx/rule.hpp>
@@ -9,7 +10,7 @@
 namespace bx {
 class executor {
 public:
-    executor(std::uint64_t concurrency = 1);
+    executor(std::uint64_t concurrency = std::thread::hardware_concurrency());
     ~executor() = default;
 
     executor(const executor&) = delete;

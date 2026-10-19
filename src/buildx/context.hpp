@@ -19,6 +19,8 @@ public:
     context(context&&) = delete;
     context& operator=(context&&) = delete;
 
+    bool verbose() const { return true; }
+
     const std::filesystem::path& root() const;
     std::filesystem::path path(const std::string& path) const;
 
