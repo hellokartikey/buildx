@@ -1,6 +1,6 @@
 #include <buildx/c_family.hpp>
 
-namespace bx::tc {
+namespace bx {
 c_family::std_f c_family::std(int v) { return { v }; }
 
 c_family::define_f c_family::define(const std::string& v) { return { v }; }

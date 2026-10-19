@@ -3,11 +3,11 @@
 
 #include <buildx/c_family.hpp>
 
-namespace bx::tc {
+namespace bx {
 class gcc : public c_family {
 public:
     template <typename... Args>
-    gcc(Args&&... args) { (apply(args),...); }
+    gcc(flags_t, Args&&... args) { (apply(std::forward<Args>(args)), ...); }
 
     std::string name() const override;
 

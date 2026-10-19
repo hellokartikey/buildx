@@ -7,11 +7,13 @@
 void bx::build() {
     auto& ctx = this_build::context;
 
+    auto cc = gcc(gcc::flags, gcc::std(23), gcc::prefix("x86_64-linux-gnu-"));
+
     auto& exe = ctx
         .add<executable>("test")
         .file(ctx.path("test") / "main.c")
         .file(ctx.path("test") / "foo.c")
-        .use<tc::gcc>(tc::gcc::std(23), tc::gcc::prefix("x86_64-linux-gnu-"));
+        .use(cc);
 
     ctx.install(exe);
 }

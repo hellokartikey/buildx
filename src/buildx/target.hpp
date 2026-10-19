@@ -49,20 +49,26 @@ public:
         return m_headers;
     }
 
-    template <std::derived_from<tc::toolchain> T, typename S, typename... Args>
+    template <std::derived_from<toolchain> T, typename S>
+    S& use(this S& self, const T& tc) {
+        self.m_tc = std::make_unique<T>(tc);
+        return self;
+    }
+
+    template <std::derived_from<toolchain> T, typename S, typename... Args>
     S& use(this S& self, Args&&... args) {
         self.m_tc = std::make_unique<T>(args...);
         return self;
     }
 
-    const tc::toolchain& tc() const;
+    const toolchain& tc() const;
 
 protected:
     void build_steps(step& first, step& last) const override;
     virtual void compile_steps(step& first, step& last) const = 0;
 
 private:
-    std::unique_ptr<tc::toolchain> m_tc;
+    std::unique_ptr<toolchain> m_tc;
 
     std::vector<std::filesystem::path> m_files;
     std::vector<std::filesystem::path> m_headers;

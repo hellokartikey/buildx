@@ -41,7 +41,9 @@ public:
 
     template <typename T, typename... Args>
     T& add(Args&&... args) {
-        auto* ptr = m_rules.emplace_back(std::make_unique<T>(args...)).get();
+        auto* ptr = m_rules.emplace_back(
+            std::make_unique<T>(std::forward<Args>(args)...)
+        ).get();
         return *static_cast<T*>(ptr);
     }
 

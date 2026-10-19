@@ -1,6 +1,6 @@
 #include <buildx/toolchain.hpp>
 
-namespace bx::tc {
+namespace bx {
 step& toolchain::compile_static(
     const std::filesystem::path& source,
     const std::filesystem::path& output,

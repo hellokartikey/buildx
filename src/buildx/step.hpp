@@ -58,8 +58,8 @@ public:
     const std::vector<std::string>& flags() const;
 
     template <typename... Args>
-    step& message(std::format_string<Args&...> fmt, Args&&... args) {
-        message(std::format(fmt, args...));
+    step& message(std::format_string<Args...> fmt, Args&&... args) {
+        message(std::format(fmt, std::forward<Args>(args)...));
         return *this;
     }
 

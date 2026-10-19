@@ -2,7 +2,7 @@
 
 #include <buildx/this_build.hpp>
 
-namespace bx::tc {
+namespace bx {
 std::string gcc::name() const { return "gcc"; }
 
 void gcc::apply(std_f flag) { m_cc.push_back(std::format("-std=gnu{}", flag.v)); }

@@ -10,8 +10,8 @@ public:
     error(const std::string& message);
 
     template <typename... Args>
-    error(std::format_string<Args&...> fmt, Args&&... args)
-        : error(std::format(fmt, args...)) {}
+    error(std::format_string<Args...> fmt, Args&&... args)
+        : error(std::format(fmt, std::forward<Args>(args)...)) {}
 };
 }
 

@@ -13,7 +13,7 @@ void target::build_steps(step& first, step& last) const {
     }
 }
 
-const tc::toolchain& target::tc() const {
+const toolchain& target::tc() const {
     if (not m_tc) throw no_toolchain(*this);
     return *m_tc;
 }

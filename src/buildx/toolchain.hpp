@@ -8,7 +8,7 @@
 #include <buildx/exceptions.hpp>
 #include <buildx/step.hpp>
 
-namespace bx::tc {
+namespace bx {
 class toolchain {
 public:
     class not_implemented : public error {
