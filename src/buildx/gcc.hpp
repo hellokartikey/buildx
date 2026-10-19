@@ -6,6 +6,8 @@
 namespace bx {
 class gcc : public c_family {
 public:
+    gcc() = default;
+
     template <typename... Args>
     gcc(flags_t, Args&&... args) { (apply(std::forward<Args>(args)), ...); }
 
@@ -23,15 +25,13 @@ public:
     void apply(md_f flag) override;
 
     step& compile_static(
-        const std::filesystem::path& source,
-        const std::filesystem::path& output,
-        const std::vector<std::string>& flags = {}
+        const target& target,
+        const std::filesystem::path& source
     ) const override;
 
     step& link_static(
-        const std::vector<std::filesystem::path>& objects,
-        const std::filesystem::path& output,
-        const std::vector<std::string>& flags = {}
+        const target& target,
+        const std::vector<std::filesystem::path>& objects
     ) const override;
 
 private:

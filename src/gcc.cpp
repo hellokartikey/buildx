@@ -1,6 +1,7 @@
 #include <buildx/gcc.hpp>
 
 #include <buildx/this_build.hpp>
+#include <buildx/target.hpp>
 
 namespace bx {
 std::string gcc::name() const { return "gcc"; }
@@ -26,39 +27,36 @@ void gcc::apply(ar_f flag) { m_ar.push_back(flag.v); }
 void gcc::apply(md_f flag) {}
 
 step& gcc::compile_static(
-    const std::filesystem::path& source,
-    const std::filesystem::path& output,
-    const std::vector<std::string>& flags
+    const target& target,
+    const std::filesystem::path& source
 ) const {
+    auto output = to_object(target, source);
     return this_build::executor
         .make_step(m_exe)
         .message(
             "{} compile static {}",
             name(),
-            std::filesystem::relative(output))
+            std::filesystem::relative(output, this_build::context.root()))
+        .flag("-o")
+        .out_flag(output)
         .flag("-c")
         .flags(m_cc)
-        .flags(flags)
-        .in_flag(source)
-        .flag("-o")
-        .out_flag(output);
+        .in_flag(source);
 }
 
 step& gcc::link_static(
-    const std::vector<std::filesystem::path>& objects,
-    const std::filesystem::path& output,
-    const std::vector<std::string>& flags
+    const target& target,
+    const std::vector<std::filesystem::path>& objects
 ) const {
     return this_build::executor
         .make_step(m_exe)
         .message(
             "{} link executable {}",
             name(),
-            std::filesystem::relative(output))
-        .flags(m_cc)
-        .flags(flags)
-        .in_flags(objects)
+            std::filesystem::relative(target.artifact()))
         .flag("-o")
-        .out_flag(output);
+        .out_flag(target.artifact())
+        .flags(m_cc)
+        .in_flags(objects);
 }
 }

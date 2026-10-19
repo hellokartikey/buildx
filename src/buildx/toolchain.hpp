@@ -9,6 +9,7 @@
 #include <buildx/step.hpp>
 
 namespace bx {
+class target;
 class toolchain {
 public:
     class not_implemented : public error {
@@ -22,45 +23,38 @@ public:
     virtual std::string name() const = 0;
 
     virtual step& compile_static(
-        const std::filesystem::path& source,
-        const std::filesystem::path& output,
-        const std::vector<std::string>& flags = {}
+        const target& target,
+        const std::filesystem::path& source
     ) const;
 
     virtual step& compile_shared(
-        const std::filesystem::path& source,
-        const std::filesystem::path& output,
-        const std::vector<std::string>& flags = {}
+        const target& target,
+        const std::filesystem::path& source
     ) const;
 
     virtual step& compile_module(
-        const std::filesystem::path& source,
-        const std::filesystem::path& output,
-        const std::vector<std::string>& flags = {}
+        const target& target,
+        const std::filesystem::path& source
     ) const;
 
     virtual step& link_static(
-        const std::vector<std::filesystem::path>& objects,
-        const std::filesystem::path& output,
-        const std::vector<std::string>& flags = {}
+        const target& target,
+        const std::vector<std::filesystem::path>& objects
     ) const;
 
     virtual step& link_shared(
-        const std::vector<std::filesystem::path>& objects,
-        const std::filesystem::path& output,
-        const std::vector<std::string>& flags = {}
+        const target& target,
+        const std::vector<std::filesystem::path>& objects
     ) const;
 
     virtual step& link_archive(
-        const std::vector<std::filesystem::path>& objects,
-        const std::filesystem::path& output,
-        const std::vector<std::string>& flags = {}
+        const target& target,
+        const std::vector<std::filesystem::path>& objects
     ) const;
 
     virtual step& link_module(
-        const std::vector<std::filesystem::path>& objects,
-        const std::filesystem::path& output,
-        const std::vector<std::string>& flags = {}
+        const target& target,
+        const std::vector<std::filesystem::path>& objects
     ) const;
 };
 }

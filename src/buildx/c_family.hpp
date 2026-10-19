@@ -2,6 +2,7 @@
 #define BUILDX_C_FAMILY_HPP
 
 #include <buildx/toolchain.hpp>
+#include <buildx/rule.hpp>
 
 namespace bx {
 class c_family : public toolchain {
@@ -41,6 +42,11 @@ public:
     virtual void apply(ar_f flag) = 0;
     virtual void apply(md_f flag) = 0;
 };
+
+std::filesystem::path to_object(
+    const target& target,
+    const std::filesystem::path& source
+);
 }
 
 #endif

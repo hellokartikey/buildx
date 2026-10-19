@@ -3,6 +3,7 @@
 
 #include <concepts>
 #include <memory>
+#include <ranges>
 
 #include <buildx/exceptions.hpp>
 #include <buildx/rule.hpp>
@@ -19,6 +20,8 @@ public:
     target(const std::string& name);
     ~target() override = default;
 
+    virtual std::filesystem::path artifact() const = 0;
+
     template <typename S>
     S& file(this S& self, const std::filesystem::path& file) {
         self.m_files.push_back(file);
@@ -28,6 +31,19 @@ public:
     template <typename S>
     S& files(this S& self, const std::vector<std::filesystem::path>& files) {
         self.m_files.append_range(files);
+        return self;
+    }
+
+    template <typename S>
+    S& files_in(
+        this S& self,
+        const std::filesystem::path& path,
+        const std::vector<std::string>& files
+    ) {
+        self.m_files.append_range(
+            files
+            | std::views::transform([&] (auto& file) { return path / file; })
+        );
         return self;
     }
 
@@ -47,6 +63,19 @@ public:
 
     const std::vector<std::filesystem::path>& headers() const {
         return m_headers;
+    }
+
+    template <typename S>
+    S& headers_in(
+        this S& self,
+        const std::filesystem::path& path,
+        const std::vector<std::string>& files
+    ) {
+        self.m_headers.append_range(
+            files
+            | std::views::transform([&] (auto& file) { return path / file; })
+        );
+        return self;
     }
 
     template <std::derived_from<toolchain> T, typename S>

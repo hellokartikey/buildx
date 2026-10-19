@@ -7,32 +7,30 @@
 namespace bx {
 executable::executable(const std::string& name) : target(name) {}
 
+std::filesystem::path executable::artifact() const {
+    return this_build::context.binary_path() / name();
+}
+
 void executable::compile_steps(step& first, step& last) const {
     auto& ctx = this_build::context;
 
-    std::vector<step*> objects;
-    for (auto& file : files()) {
-        auto output =
-            ctx.scratch_path(*this)
-            / std::filesystem::relative(file, ctx.root());
+    auto compile = [&] (const std::filesystem::path& file) {
+        return &tc().compile_static(*this, file);
+    };
 
-        output.replace_extension(".o");
+    auto steps = files()
+        | std::views::transform(compile)
+        | std::ranges::to<std::vector>();
 
-        auto& step = tc()
-            .compile_static(file, output)
-            .depends_on(first);
-
-        objects.push_back(&step);
-    }
+    auto objects = steps
+        | std::views::transform([] (auto* s) { return s->out_files(); })
+        | std::views::join
+        | std::ranges::to<std::vector>();
 
     auto& link = tc()
-        .link_static(
-            objects
-            | std::views::transform([] (auto* s) { return s->out_files(); })
-            | std::views::join
-            | std::ranges::to<std::vector>(),
-            ctx.binary_path() / name());
+        .link_static(*this, objects)
+        .depends_on(first);
 
-    for (auto* object : objects) { link.depends_on(*object); }
+    for (auto* step : steps) { link.depends_on(*step); }
 }
 }
