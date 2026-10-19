@@ -10,10 +10,13 @@ namespace cobalt = boost::cobalt;
 cobalt::main co_main(int argc, char** argv) {
     using namespace bx;
 
+    auto& ctx = this_build::context;
+    auto& exec = this_build::executor;
+
     try {
-        build();
-        this_build::executor.build_steps(this_build::context.install());
-        this_build::executor.exec_all();
+        build(ctx);
+        exec.build_steps(ctx.install());
+        exec.exec_all();
     } catch (error& e) {
         std::println(stderr, "[-] buildx error: {}", e.what());
         co_return 1;
