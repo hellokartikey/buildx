@@ -1,34 +1,34 @@
 #include <buildx/build.hpp>
 
 #include <buildx/executable.hpp>
-#include <buildx/gcc.hpp>
+#include <buildx/gxx.hpp>
 #include <buildx/library.hpp>
 
 void bx::build(context& ctx) {
-    auto cc = gcc{
-        gcc::flags,
-        gcc::std(23),
-        gcc::prefix("x86_64-linux-gnu-"),
-        gcc::define("FOO")
+    auto cxx = gxx{
+        gxx::flags,
+        gxx::std(23),
+        gxx::prefix("x86_64-linux-gnu-"),
+        gxx::define("FOO")
     };
 
     auto& bar = ctx
         .add<library>("bar")
         .shared(true)
         .files_in(ctx.path("test"), { "bar.c" })
-        .use(cc);
+        .use(cxx);
 
     auto& foo = ctx
         .add<library>("foo")
         .files_in(ctx.path("test"), { "foo.c" })
         .link(bar)
-        .use(cc);
+        .use(cxx);
 
     auto& exe = ctx
         .add<executable>("test")
         .files_in(ctx.path("test"), { "main.c" })
         .link(foo)
-        .use(cc);
+        .use(cxx);
 
     ctx.install(exe);
 }

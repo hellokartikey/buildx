@@ -7,6 +7,7 @@ target_sources(
         executable.cpp
         executor.cpp
         gcc.cpp
+        gxx.cpp
         library.cpp
         phony.cpp
         main.cpp
@@ -18,12 +19,14 @@ target_sources(
     PUBLIC FILE_SET HEADERS FILES
         buildx/build.hpp
         buildx/cc.hpp
+        buildx/cxx.hpp
         buildx/c_family.hpp
         buildx/context.hpp
         buildx/exceptions.hpp
         buildx/executable.hpp
         buildx/executor.hpp
         buildx/gcc.hpp
+        buildx/gxx.hpp
         buildx/library.hpp
         buildx/phony.hpp
         buildx/rule.hpp
