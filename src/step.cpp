@@ -67,6 +67,11 @@ step& step::depends_on(const step& other) {
     return *this;
 }
 
+step& step::depends_on(const view<step>& others) {
+    for (auto& step : others) depends_on(step);
+    return *this;
+}
+
 step& step::in_file(const std::filesystem::path& file) {
     m_in.push_back(file);
     return *this;

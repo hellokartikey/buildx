@@ -6,6 +6,7 @@
 #include <vector>
 
 #include <buildx/exceptions.hpp>
+#include <buildx/view.hpp>
 
 namespace bx {
 class executor;
@@ -66,9 +67,8 @@ public:
     step& message(const std::string& message);
     const std::string& message() const;
 
-    template <std::same_as<step>... T>
-    step& depends_on(const T&... others) { return (depends_on(others), ...); }
     step& depends_on(const step& other);
+    step& depends_on(const view<step>& others);
 
     step& in_file(const std::filesystem::path& file);
     step& in_files(const std::vector<std::filesystem::path>& files);

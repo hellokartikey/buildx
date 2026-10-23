@@ -7,6 +7,7 @@ target_sources(
         executable.cpp
         executor.cpp
         gcc.cpp
+        library.cpp
         phony.cpp
         main.cpp
         rule.cpp
@@ -22,12 +23,14 @@ target_sources(
         buildx/executable.hpp
         buildx/executor.hpp
         buildx/gcc.hpp
+        buildx/library.hpp
         buildx/phony.hpp
         buildx/rule.hpp
         buildx/step.hpp
         buildx/target.hpp
         buildx/this_build.hpp
         buildx/toolchain.hpp
+        buildx/view.hpp
 )
 
 target_link_libraries(libbx PRIVATE Boost::process Boost::cobalt)

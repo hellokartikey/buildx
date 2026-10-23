@@ -10,6 +10,7 @@
 #include <buildx/toolchain.hpp>
 
 namespace bx {
+class library;
 class target : public rule {
 public:
     class no_toolchain : public error {
@@ -47,8 +48,6 @@ public:
         return self;
     }
 
-    const std::vector<std::filesystem::path>& files() const { return m_files; }
-
     template <typename S>
     S& header(this S& self, const std::filesystem::path& file) {
         self.m_headers.push_back(file);
@@ -59,10 +58,6 @@ public:
     S& headers(this S& self, const std::vector<std::filesystem::path>& files) {
         self.m_headers.append_range(files);
         return self;
-    }
-
-    const std::vector<std::filesystem::path>& headers() const {
-        return m_headers;
     }
 
     template <typename S>
@@ -90,17 +85,43 @@ public:
         return self;
     }
 
-    const toolchain& tc() const;
+    template <typename S>
+    S& link(this S& self, library& library) {
+        self.m_link.push_back(library);
+        self.depends_on(library);
+        return self;
+    }
+
+    template <typename S, typename... L>
+        requires (std::same_as<L, library> && ...)
+    S& link(this S& self, L&... libraries) {
+        return (self.link(libraries), ...);
+    }
+
+    template <typename S>
+    S& link(this S& self, view<library> libraries) {
+        for (auto& library : libraries) self.link(library);
+        return self;
+    }
+
+    const std::vector<std::filesystem::path>& files() const;
+    const std::vector<std::filesystem::path>& headers() const;
+    const toolchain& toolchain() const;
+
+    const view<library>& link_libraries() const;
+    view<library> all_link_libraries() const;
 
 protected:
     void build_steps(step& first, step& last) const override;
     virtual void compile_steps(step& first, step& last) const = 0;
 
 private:
-    std::unique_ptr<toolchain> m_tc;
+    std::unique_ptr<class toolchain> m_tc;
 
     std::vector<std::filesystem::path> m_files;
     std::vector<std::filesystem::path> m_headers;
+
+    view<library> m_link;
 };
 }
 

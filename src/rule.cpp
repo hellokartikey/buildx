@@ -31,7 +31,8 @@ void rule::depends_on(const rule& other) {
 void rule::build_all_steps(step& first, step& last) const {
     build_steps(first, last);
     for (auto* dep : m_depends) {
-        dep->build_all_steps(this_build::executor.make_step(), first);
+        auto& new_step = this_build::executor.make_step();
+        dep->build_all_steps(new_step, first);
     }
 }
 

@@ -29,13 +29,32 @@ public:
         const std::filesystem::path& source
     ) const override;
 
+    step& compile_shared(
+        const target& target,
+        const std::filesystem::path& source
+    ) const override;
+
     step& link_static(
         const target& target,
-        const std::vector<std::filesystem::path>& objects
+        const std::vector<std::filesystem::path>& objects,
+        const view<library>& libraries = {}
+    ) const override;
+
+    step& link_archive(
+        const target& target,
+        const std::vector<std::filesystem::path>& objects,
+        const view<library>& libraries = {}
+    ) const override;
+
+    step& link_shared(
+        const target& target,
+        const std::vector<std::filesystem::path>& objects,
+        const view<library>& libraries = {}
     ) const override;
 
 private:
     std::string m_exe = "gcc";
+    std::string m_ar_exe = "gcc-ar";
 
     std::vector<std::string> m_cc;
     std::vector<std::string> m_ar;

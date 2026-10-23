@@ -10,6 +10,7 @@
 
 namespace bx {
 class target;
+class library;
 class toolchain {
 public:
     class not_implemented : public error {
@@ -19,6 +20,9 @@ public:
 
     toolchain() = default;
     virtual ~toolchain() = default;
+
+    virtual bool operator==(const toolchain&) const = default;
+    bool is_same_as(const toolchain& other) const;
 
     virtual std::string name() const = 0;
 
@@ -39,22 +43,26 @@ public:
 
     virtual step& link_static(
         const target& target,
-        const std::vector<std::filesystem::path>& objects
+        const std::vector<std::filesystem::path>& objects,
+        const view<library>& libraries = {}
     ) const;
 
     virtual step& link_shared(
         const target& target,
-        const std::vector<std::filesystem::path>& objects
+        const std::vector<std::filesystem::path>& objects,
+        const view<library>& libraries = {}
     ) const;
 
     virtual step& link_archive(
         const target& target,
-        const std::vector<std::filesystem::path>& objects
+        const std::vector<std::filesystem::path>& objects,
+        const view<library>& libraries = {}
     ) const;
 
     virtual step& link_module(
         const target& target,
-        const std::vector<std::filesystem::path>& objects
+        const std::vector<std::filesystem::path>& objects,
+        const view<library>& libraries = {}
     ) const;
 };
 }

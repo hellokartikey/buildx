@@ -12,25 +12,25 @@ std::filesystem::path executable::artifact() const {
 }
 
 void executable::compile_steps(step& first, step& last) const {
-    auto& ctx = this_build::context;
-
-    auto compile = [&] (const std::filesystem::path& file) {
-        return &tc().compile_static(*this, file);
+    auto compile = [&] (const std::filesystem::path& file) -> step& {
+        return toolchain()
+            .compile_static(*this, file)
+            .depends_on(first);
     };
 
     auto steps = files()
         | std::views::transform(compile)
-        | std::ranges::to<std::vector>();
+        | as_view;
 
     auto objects = steps
-        | std::views::transform([] (auto* s) { return s->out_files(); })
+        | std::views::transform([] (auto& s) { return s.out_files(); })
         | std::views::join
         | std::ranges::to<std::vector>();
 
-    auto& link = tc()
-        .link_static(*this, objects)
-        .depends_on(first);
+    auto& link = toolchain()
+        .link_static(*this, objects, all_link_libraries())
+        .depends_on(steps);
 
-    for (auto* step : steps) { link.depends_on(*step); }
+    last.depends_on(link);
 }
 }

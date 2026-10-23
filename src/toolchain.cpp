@@ -3,6 +3,13 @@
 #include <buildx/target.hpp>
 
 namespace bx {
+bool toolchain::is_same_as(const toolchain& other) const {
+    if (typeid(*this) == typeid(other)) {
+        return *this == other;
+    }
+    return false;
+}
+
 step& toolchain::compile_static(
     const target& target,
     const std::filesystem::path& source
@@ -26,28 +33,32 @@ step& toolchain::compile_module(
 
 step& toolchain::link_static(
     const target& target,
-    const std::vector<std::filesystem::path>& objects
+    const std::vector<std::filesystem::path>& objects,
+    const view<library>& libraries
 ) const {
     throw not_implemented(name(), "link_static()");
 }
 
 step& toolchain::link_shared(
     const target& target,
-    const std::vector<std::filesystem::path>& objects
+    const std::vector<std::filesystem::path>& objects,
+    const view<library>& libraries
 ) const {
     throw not_implemented(name(), "link_shared()");
 }
 
 step& toolchain::link_archive(
     const target& target,
-    const std::vector<std::filesystem::path>& objects
+    const std::vector<std::filesystem::path>& objects,
+    const view<library>& libraries
 ) const {
     throw not_implemented(name(), "link_archive()");
 }
 
 step& toolchain::link_module(
     const target& target,
-    const std::vector<std::filesystem::path>& objects
+    const std::vector<std::filesystem::path>& objects,
+    const view<library>& libraries
 ) const {
     throw not_implemented(name(), "link_module()");
 }

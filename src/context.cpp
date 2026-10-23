@@ -3,6 +3,8 @@
 #include <buildx/rule.hpp>
 
 namespace bx {
+bool context::verbose() const { return false; }
+
 const std::filesystem::path& context::root() const { return m_root; }
 
 std::filesystem::path context::path(const std::string& path) const {

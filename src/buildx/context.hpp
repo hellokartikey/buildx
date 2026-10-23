@@ -19,7 +19,7 @@ public:
     context(context&&) = delete;
     context& operator=(context&&) = delete;
 
-    bool verbose() const { return true; }
+    bool verbose() const;
 
     const std::filesystem::path& root() const;
     std::filesystem::path path(const std::string& path) const;
@@ -56,7 +56,7 @@ private:
     std::filesystem::path m_binary = m_prefix / "bin";
     std::filesystem::path m_include = m_prefix / "include";
     std::filesystem::path m_library = m_prefix / "lib";
-    std::filesystem::path m_scratch = m_root / ".bx-cache";
+    std::filesystem::path m_scratch = m_root / "bx-cache";
 
     std::list<std::unique_ptr<rule>> m_rules;
     phony m_install{"install"};
