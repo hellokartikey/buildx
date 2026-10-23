@@ -64,11 +64,18 @@ private:
 template <viewable R>
 view(std::from_range_t, R&& range) -> view<view_t<R>>;
 
-inline class as_view_t {} as_view;
+struct as_view_t {
+    template <viewable R>
+    static view<view_t<R>> operator()(R&& range) {
+        return { std::from_range, std::forward<R>(range) };
+    }
+};
+
+inline as_view_t as_view;
 
 template <viewable R>
 view<view_t<R>> operator|(R&& range, as_view_t) {
-    return {std::from_range, std::forward<R>(range) };
+    return as_view_t::operator()(std::forward<R>(range));
 }
 
 static_assert(std::ranges::range<view<int>>);

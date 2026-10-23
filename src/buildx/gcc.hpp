@@ -1,10 +1,10 @@
 #ifndef BUILDX_GCC_HPP
 #define BUILDX_GCC_HPP
 
-#include <buildx/c_family.hpp>
+#include <buildx/cc.hpp>
 
 namespace bx {
-class gcc : public c_family {
+class gcc : public cc {
 public:
     gcc() = default;
 

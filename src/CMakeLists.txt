@@ -17,6 +17,7 @@ target_sources(
 
     PUBLIC FILE_SET HEADERS FILES
         buildx/build.hpp
+        buildx/cc.hpp
         buildx/c_family.hpp
         buildx/context.hpp
         buildx/exceptions.hpp
