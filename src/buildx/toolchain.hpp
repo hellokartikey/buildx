@@ -13,8 +13,7 @@ class target;
 class library;
 class toolchain {
 public:
-    class not_implemented : public error {
-    public:
+    struct not_implemented : error {
         not_implemented(const std::string& name, const std::string& method);
     };
 

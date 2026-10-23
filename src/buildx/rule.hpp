@@ -11,8 +11,7 @@ namespace bx {
 class executor;
 class rule {
 public:
-    class cyclic_dependency: public error {
-    public:
+    struct cyclic_dependency: error {
         cyclic_dependency(const rule& parent, const rule& child);
     };
 

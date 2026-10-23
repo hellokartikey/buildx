@@ -13,8 +13,7 @@ namespace bx {
 class library;
 class target : public rule {
 public:
-    class no_toolchain : public error {
-    public:
+    struct no_toolchain : error {
         no_toolchain(const target& target);
     };
 

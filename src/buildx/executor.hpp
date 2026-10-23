@@ -7,9 +7,13 @@
 #include <buildx/step.hpp>
 #include <buildx/rule.hpp>
 
+int main(int argc, char** argv);
+
 namespace bx {
 class executor {
 public:
+    friend int ::main(int argc, char** argv);
+
     executor(std::uint64_t concurrency = std::thread::hardware_concurrency());
     ~executor() = default;
 

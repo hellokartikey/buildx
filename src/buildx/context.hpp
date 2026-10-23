@@ -3,13 +3,25 @@
 
 #include <filesystem>
 #include <list>
+#include <unordered_map>
 
 #include <buildx/rule.hpp>
 #include <buildx/phony.hpp>
+#include <buildx/exceptions.hpp>
+
+int main(int argc, char** argv);
 
 namespace bx {
 class context {
 public:
+    struct parse_error : error {
+        template <typename... Args>
+        parse_error(std::format_string<Args...> fmt, Args&&... args)
+            : error(std::format(fmt, std::forward<Args>(args)...)) {}
+    };
+
+    friend int ::main(int argc, char** argv);
+
     context() = default;
     ~context() = default;
 
@@ -18,8 +30,6 @@ public:
 
     context(context&&) = delete;
     context& operator=(context&&) = delete;
-
-    bool verbose() const;
 
     const std::filesystem::path& root() const;
     std::filesystem::path path(const std::string& path) const;
@@ -50,6 +60,12 @@ public:
     context& install(const rule& rule);
     const phony& install() const;
 
+    bool verbose() const;
+    const std::filesystem::path& build_script() const;
+
+private:
+    void parse(int argc, char** argv);
+
 private:
     std::filesystem::path m_root = std::filesystem::current_path();
     std::filesystem::path m_prefix = m_root / "bx-out";
@@ -60,6 +76,10 @@ private:
 
     std::list<std::unique_ptr<rule>> m_rules;
     phony m_install{"install"};
+
+    std::filesystem::path m_script;
+    std::unordered_map<std::string, std::string> m_options;
+    bool m_verbose = false;
 };
 }
 

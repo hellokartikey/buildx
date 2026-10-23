@@ -3,8 +3,6 @@
 #include <buildx/rule.hpp>
 
 namespace bx {
-bool context::verbose() const { return false; }
-
 const std::filesystem::path& context::root() const { return m_root; }
 
 std::filesystem::path context::path(const std::string& path) const {
@@ -53,4 +51,55 @@ context& context::install(const rule& rule) {
     return *this;
 }
 const phony& context::install() const { return m_install; }
+
+std::string_view consume(int argc, char** argv, int& iter) {
+    return argv[iter++];
+}
+
+bool context::verbose() const { return m_verbose; }
+
+const std::filesystem::path& context::build_script() const { return m_script; }
+
+auto split(std::string_view option, char at = '=') {
+    auto idx = option.find(at);
+    return std::pair{
+        option.substr(0, idx),
+        idx == std::string_view::npos ? "" : option.substr(idx + 1)
+    };
+}
+
+auto user_option(
+    std::unordered_map<std::string, std::string>& map,
+    std::string_view option
+) {
+    option.remove_prefix(2);
+    auto [key, value] = split(option);
+
+    if (key.empty()) {
+        throw context::parse_error("-D must be followed by a name.");
+    }
+
+    map[static_cast<std::string>(key)] = value;
+}
+
+void context::parse(int argc, char** argv) {
+    if (argc < 2) throw parse_error("missing build script.");
+    int iter = 1;
+
+    auto script = consume(argc, argv, iter);
+    m_script = std::filesystem::current_path() / script;
+    if (not std::filesystem::exists(m_script))
+        throw parse_error("build script {} does not exist.", script);
+
+    while (iter < argc) {
+        auto option = consume(argc, argv, iter);
+        if (option.starts_with("-D")) {
+            user_option(m_options, option);
+        } else if (option == "--verbose" or option == "-v") {
+            m_verbose = true;
+        } else {
+            throw parse_error("unknown option {}", option);
+        }
+    }
+}
 }

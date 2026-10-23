@@ -12,23 +12,19 @@ namespace bx {
 class executor;
 class step {
 public:
-    class executable_not_found : public error {
-    public:
+    struct executable_not_found : error {
         executable_not_found(const std::string exe);
     };
 
-    class cycle_detected : public error {
-    public:
+    struct cycle_detected : error {
         cycle_detected(const step& parent, const step& other);
     };
 
-    class pending_dependencies : public error {
-    public:
+    struct pending_dependencies : error {
         pending_dependencies(const step& step);
     };
 
-    class execution_error : public error {
-    public:
+    struct execution_error : error {
         execution_error(const step& step);
     };
 
