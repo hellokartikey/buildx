@@ -5,7 +5,7 @@
 namespace bx {
 target::target(const std::string& name) : rule(name) {}
 
-void target::build_steps(step& first, step& last) const {
+void target::build_steps(step& first, step& last) {
     if (not m_tc) throw no_toolchain(*this);
 
     if (files().empty() and headers().empty()) {
@@ -15,7 +15,7 @@ void target::build_steps(step& first, step& last) const {
     }
 }
 
-const toolchain& target::toolchain() const {
+const toolchain& target::tools() const {
     if (not m_tc) throw no_toolchain(*this);
     return *m_tc;
 }

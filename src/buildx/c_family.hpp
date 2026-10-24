@@ -7,7 +7,7 @@
 namespace bx {
 class c_family : public toolchain {
 public:
-    static struct flags_t {} flags;
+    static constexpr struct flags_t {} flags;
 
     struct std_f { int v; };
     struct define_f { std::string v; };

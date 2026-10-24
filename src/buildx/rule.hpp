@@ -29,18 +29,23 @@ public:
     bool is_direct_dependency(const rule& other) const;
     bool is_dependency(const rule& other) const;
 
-    void depends_on(const rule& other);
+    template <typename S>
+    S& depends_on(this S& self, rule& other) {
+        if (other.is_dependency(self)) throw cyclic_dependency(self, other);
+        self.m_depends.push_back(&other);
+        return self;
+    }
 
 protected:
-    virtual void build_steps(step& first, step& last) const = 0;
+    virtual void build_steps(step& first, step& last) = 0;
 
 private:
     friend class executor;
-    void build_all_steps(step& first, step& last) const;
+    void build_all_steps(step& first, step& last);
 
 private:
     std::string m_name;
-    std::vector<const rule*> m_depends;
+    std::vector<rule*> m_depends;
 };
 }
 

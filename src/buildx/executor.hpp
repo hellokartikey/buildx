@@ -33,7 +33,7 @@ public:
     executor& concurrency(std::uint64_t concurrency);
 
     void exec_all();
-    void build_steps(const rule& rule);
+    void build_steps(rule& rule);
 
 private:
     std::list<step> m_steps;

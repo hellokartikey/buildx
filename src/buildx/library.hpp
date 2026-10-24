@@ -19,7 +19,7 @@ public:
     bool is_shared() const;
 
 protected:
-    void compile_steps(step& first, step& last) const override;
+    void compile_steps(step& first, step& last) override;
 
     virtual void compile_shared(step& first, step& last) const;
     virtual void compile_archive(step& first, step& last) const;

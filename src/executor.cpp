@@ -10,8 +10,11 @@
 
 #define BOOST_PROCESS_USE_STD_FS
 #include <boost/process/process.hpp>
+#include <boost/process/environment.hpp>
 
 #include <buildx/this_build.hpp>
+
+using boost::process::environment::find_executable;
 
 namespace bx {
 executor::executor(std::uint64_t concurrency) : m_concurrency(concurrency) {}
@@ -62,9 +65,13 @@ void executor::exec_all() {
             std::println(stderr);
         }
 
+        auto executable = find_executable(step.executable());
+        if (executable.empty())
+            throw step::executable_not_found(step.executable());
+
         auto process = boost::process::process(
             co_await boost::cobalt::this_coro::executor,
-            step.executable(),
+            executable,
             step.flags()
         );
 
@@ -91,7 +98,7 @@ void executor::exec_all() {
     }
 }
 
-void executor::build_steps(const rule& rule) {
+void executor::build_steps(rule& rule) {
     rule.build_all_steps(make_step(), make_step());
 }
 }

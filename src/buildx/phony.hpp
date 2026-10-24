@@ -9,7 +9,7 @@ public:
     phony(const std::string& name);
 
 protected:
-    void build_steps(step& first, step& last) const override;
+    void build_steps(step& first, step& last) override;
 };
 }
 

@@ -21,14 +21,7 @@ bool rule::is_dependency(const rule& other) const {
             [&] (const auto* r) { return r->is_dependency(other); });
 }
 
-void rule::depends_on(const rule& other) {
-    if (other.is_dependency(*this))
-        throw cyclic_dependency(*this, other);
-
-    m_depends.push_back(&other);
-}
-
-void rule::build_all_steps(step& first, step& last) const {
+void rule::build_all_steps(step& first, step& last) {
     build_steps(first, last);
     for (auto* dep : m_depends) {
         auto& new_step = this_build::executor.make_step();

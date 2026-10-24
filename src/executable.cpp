@@ -11,9 +11,17 @@ std::filesystem::path executable::artifact() const {
     return this_build::context.binary_path() / name();
 }
 
-void executable::compile_steps(step& first, step& last) const {
+command& executable::run() {
+    return this_build::context
+        .add<command>(std::format("run_{}", name()))
+        .executable(artifact())
+        .message("running executable {}", name())
+        .depends_on(*this);
+}
+
+void executable::compile_steps(step& first, step& last) {
     auto compile = [&] (const std::filesystem::path& file) -> step& {
-        return toolchain()
+        return tools()
             .compile_static(*this, file)
             .depends_on(first);
     };
@@ -27,7 +35,7 @@ void executable::compile_steps(step& first, step& last) const {
         | std::views::join
         | std::ranges::to<std::vector>();
 
-    auto& link = toolchain()
+    auto& link = tools()
         .link_static(*this, objects, all_link_libraries())
         .depends_on(steps);
 

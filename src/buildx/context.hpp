@@ -47,6 +47,7 @@ public:
     context& library_path(const std::filesystem::path& path);
 
     std::filesystem::path scratch_path(const rule& rule) const;
+    const std::filesystem::path& scratch_path() const;
     context& scratch_path_prefix(const std::filesystem::path& path);
 
     template <typename T, typename... Args>
@@ -57,11 +58,14 @@ public:
         return *static_cast<T*>(ptr);
     }
 
-    context& install(const rule& rule);
-    const phony& install() const;
+    context& install(rule& rule);
+    phony& install();
 
     bool verbose() const;
     const std::filesystem::path& build_script() const;
+
+    int argc() const;
+    char** argv() const;
 
 private:
     void parse(int argc, char** argv);
@@ -76,6 +80,9 @@ private:
 
     std::list<std::unique_ptr<rule>> m_rules;
     phony m_install{"install"};
+
+    int m_argc = 0;
+    char** m_argv = nullptr;
 
     std::filesystem::path m_script;
     std::unordered_map<std::string, std::string> m_options;

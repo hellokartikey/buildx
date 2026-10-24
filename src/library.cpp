@@ -14,14 +14,14 @@ std::filesystem::path library::artifact() const {
 
 bool library::is_shared() const { return m_shared; }
 
-void library::compile_steps(step& first, step& last) const {
+void library::compile_steps(step& first, step& last) {
     if (m_shared) compile_shared(first, last);
     else compile_archive(first, last);
 }
 
 void library::compile_shared(step& first, step& last) const {
     auto compile = [&] (const std::filesystem::path& file) -> step& {
-        return toolchain()
+        return tools()
             .compile_shared(*this, file)
             .depends_on(first);
     };
@@ -35,7 +35,7 @@ void library::compile_shared(step& first, step& last) const {
         | std::views::join
         | std::ranges::to<std::vector>();
 
-    auto& link = toolchain()
+    auto& link = tools()
         .link_shared(*this, objects, link_libraries())
         .depends_on(steps);
 
@@ -44,7 +44,7 @@ void library::compile_shared(step& first, step& last) const {
 
 void library::compile_archive(step& first, step& last) const {
     auto compile = [&] (const std::filesystem::path& file) -> step& {
-        return toolchain()
+        return tools()
             .compile_static(*this, file)
             .depends_on(first);
     };
@@ -58,7 +58,7 @@ void library::compile_archive(step& first, step& last) const {
         | std::views::join
         | std::ranges::to<std::vector>();
 
-    auto& link = toolchain()
+    auto& link = tools()
         .link_archive(*this, objects, link_libraries())
         .depends_on(steps);
 

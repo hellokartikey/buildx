@@ -4,20 +4,13 @@
 #include <filesystem>
 #include <ranges>
 
-#define BOOST_PROCESS_USE_STD_FS
-#include <boost/process/environment.hpp>
-
-using boost::process::environment::find_executable;
-
 namespace bx {
 step::step(std::uint64_t id) : m_id(id), m_phony(true) {}
 
 step::step(std::uint64_t id, const std::string& exe)
     : m_id(id)
     , m_phony(false)
-    , m_exe(find_executable(exe)) {
-    if (m_exe.empty()) throw executable_not_found(exe);
-}
+    , m_exe(exe) {}
 
 bool step::is_phony() const { return m_phony; }
 
@@ -40,7 +33,7 @@ bool step::is_dependency(const step& other) const {
     );
 }
 
-const std::filesystem::path& step::executable() const { return m_exe; }
+const std::string& step::executable() const { return m_exe; }
 
 step& step::flag(const std::string& flag) {
     m_flags.push_back(flag);

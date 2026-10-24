@@ -38,19 +38,21 @@ context& context::library_path(const std::filesystem::path& path) {
 }
 
 std::filesystem::path context::scratch_path(const rule& rule) const {
-    return m_scratch / rule.name();
+    return m_scratch / "targets" / rule.name();
 }
+
+const std::filesystem::path& context::scratch_path() const { return m_scratch; }
 
 context& context::scratch_path_prefix(const std::filesystem::path& path) {
     m_scratch = path;
     return *this;
 }
 
-context& context::install(const rule& rule) {
+context& context::install(rule& rule) {
     m_install.depends_on(rule);
     return *this;
 }
-const phony& context::install() const { return m_install; }
+phony& context::install() { return m_install; }
 
 std::string_view consume(int argc, char** argv, int& iter) {
     return argv[iter++];
@@ -59,6 +61,10 @@ std::string_view consume(int argc, char** argv, int& iter) {
 bool context::verbose() const { return m_verbose; }
 
 const std::filesystem::path& context::build_script() const { return m_script; }
+
+int context::argc() const { return m_argc; }
+
+char** context::argv() const { return m_argv; }
 
 auto split(std::string_view option, char at = '=') {
     auto idx = option.find(at);
@@ -83,6 +89,9 @@ auto user_option(
 }
 
 void context::parse(int argc, char** argv) {
+    m_argc = argc;
+    m_argv = argv;
+
     if (argc < 2) throw parse_error("missing build script.");
     int iter = 1;
 

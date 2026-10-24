@@ -1,6 +1,7 @@
 #ifndef BUILDX_EXECUTABLE_HPP
 #define BUILDX_EXECUTABLE_HPP
 
+#include <buildx/command.hpp>
 #include <buildx/target.hpp>
 
 namespace bx {
@@ -10,8 +11,10 @@ public:
 
     std::filesystem::path artifact() const override;
 
+    command& run();
+
 protected:
-    void compile_steps(step& first, step& last) const override;
+    void compile_steps(step& first, step& last) override;
 };
 }
 

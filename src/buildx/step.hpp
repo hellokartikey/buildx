@@ -48,7 +48,7 @@ public:
     bool is_direct_dependency(const step& other) const;
     bool is_dependency(const step& other) const;
 
-    const std::filesystem::path& executable() const;
+    const std::string& executable() const;
 
     step& flag(const std::string& flag);
     step& flags(const std::vector<std::string>& flags);
@@ -86,7 +86,7 @@ private:
     std::uint64_t m_id{};
     std::vector<const step*> m_depends;
 
-    std::filesystem::path m_exe;
+    std::string m_exe;
     std::vector<std::string> m_flags;
 
     std::vector<std::filesystem::path> m_in;
