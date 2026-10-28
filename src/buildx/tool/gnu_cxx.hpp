@@ -1,0 +1,49 @@
+#ifndef BUILDX_TOOL_GNU_CXX_HPP
+#define BUILDX_TOOL_GNU_CXX_HPP
+
+#include <buildx/tool/c_mixins.hpp>
+#include <buildx/shared_tool.hpp>
+#include <buildx/static_tool.hpp>
+
+namespace bx::tool {
+class gnu_cxx : public static_tool, public shared_tool, public cc_mixin {
+public:
+    void apply(std_f flag);
+    void apply(define_f flag);
+    void apply(define_kv flag);
+    void apply(include_f flag);
+
+    void apply(cc_f flag);
+    void apply(ld_f flag);
+
+    step& compile_static(
+        const target& target,
+        const std::filesystem::path& source
+    ) override;
+
+    step& compile_shared(
+        const target& target,
+        const std::filesystem::path& source
+    ) override;
+
+    step& link_static(
+        const target& target,
+        const std::vector<std::filesystem::path>& objects,
+        const view<library>& libraries = {}
+    ) override;
+
+    step& link_shared(
+        const target& target,
+        const std::vector<std::filesystem::path>& objects,
+        const view<library>& libraries = {}
+    ) override;
+
+private:
+    std::string m_exe = "g++";
+
+    std::vector<std::string> m_cc;
+    std::vector<std::string> m_ld;
+};
+}
+
+#endif

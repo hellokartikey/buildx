@@ -4,46 +4,65 @@ set_target_properties(libbx PROPERTIES OUTPUT_NAME bx)
 target_sources(
     libbx
     PRIVATE
-        c_family.cpp
-        command.cpp
+        c_mixins.cpp
+        gnu_ar.cpp
+        gnu_cc.cpp
+        gnu_cxx.cpp
+
+        toolchain.cpp
+        archive_tool.cpp
+        shared_tool.cpp
+        static_tool.cpp
+
         context.cpp
         exceptions.cpp
-        executable.cpp
         executor.cpp
+        rule.cpp
+        step.cpp
+        main.cpp
+
+        target.cpp
+        command.cpp
+        executable.cpp
+        library.cpp
+        phony.cpp
+        script.cpp
+        system_library.cpp
+
         gcc.cpp
         gxx.cpp
-        library.cpp
-        main.cpp
-        phony.cpp
-        rule.cpp
-        script.cpp
-        step.cpp
-        system_library.cpp
-        target.cpp
-        toolchain.cpp
 
     PUBLIC FILE_SET HEADERS FILES
-        buildx/build.hpp
-        buildx/cc.hpp
-        buildx/c_family.hpp
-        buildx/command.hpp
+        buildx/tool/c_mixins.hpp
+        buildx/tool/gnu_ar.hpp
+        buildx/tool/gnu_cc.hpp
+        buildx/tool/gnu_cxx.hpp
+
+        buildx/toolchain.hpp
+        buildx/archive_tool.hpp
+        buildx/shared_tool.hpp
+        buildx/static_tool.hpp
+
         buildx/context.hpp
-        buildx/cxx.hpp
         buildx/exceptions.hpp
-        buildx/executable.hpp
         buildx/executor.hpp
-        buildx/gcc.hpp
-        buildx/gxx.hpp
+        buildx/rule.hpp
+        buildx/step.hpp
+        buildx/this_build.hpp
+        buildx/view.hpp
+
+        buildx/target.hpp
+        buildx/command.hpp
+        buildx/executable.hpp
         buildx/library.hpp
         buildx/phony.hpp
-        buildx/rule.hpp
         buildx/script.hpp
-        buildx/step.hpp
         buildx/system_library.hpp
-        buildx/target.hpp
-        buildx/this_build.hpp
-        buildx/toolchain.hpp
-        buildx/view.hpp
+
+        buildx/gcc.hpp
+        buildx/gxx.hpp
+
+        buildx/build.hpp
 )
 
 

@@ -21,8 +21,8 @@ public:
 protected:
     void compile_steps(step& first, step& last) override;
 
-    virtual void compile_shared(step& first, step& last) const;
-    virtual void compile_archive(step& first, step& last) const;
+    virtual void compile_shared(step& first, step& last);
+    virtual void compile_archive(step& first, step& last);
 
 private:
     bool m_shared = false;

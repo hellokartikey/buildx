@@ -1,33 +1,25 @@
 #include <buildx/build.hpp>
 
-#include <buildx/gxx.hpp>
-#include <buildx/script.hpp>
-
-constexpr char libbx_e[] = {
+constexpr char LIBBX_E[] = {
 #   embed LIBBX_FILE
 };
 
-constexpr char headers_e[] = {
+constexpr auto LIBBX_S = sizeof(LIBBX_E);
+
+constexpr char HEAD_E[] = {
 #   embed HEADERS_FILE
 };
+
+constexpr auto HEAD_S = sizeof(HEAD_E);
 
 void bx::build(context& ctx) {
     auto& build = ctx
         .add<script>(
-            embed_file{
-                .name = LIBBX_NAME,
-                .data = libbx_e,
-                .size = sizeof(libbx_e)
-            },
-            embed_file{
-                .name = HEADERS_NAME,
-                .data = headers_e,
-                .size = sizeof(headers_e)
-            }
+            embed_file{ .name = LIBBX_NAME, .data = LIBBX_E, .size = LIBBX_S },
+            embed_file{ .name = HEADERS_NAME, .data = HEAD_E, .size = HEAD_S }
         )
         .file(ctx.build_script())
         .use<gxx>(
-            gxx::flags,
             gxx::std(26),
             gxx::include(ctx.scratch_path() / "include")
         );

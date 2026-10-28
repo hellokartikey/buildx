@@ -1,68 +1,30 @@
 #ifndef BUILDX_TOOLCHAIN_HPP
 #define BUILDX_TOOLCHAIN_HPP
 
-#include <filesystem>
-#include <string>
-#include <vector>
-
 #include <buildx/exceptions.hpp>
-#include <buildx/step.hpp>
 
 namespace bx {
-class target;
-class library;
 class toolchain {
 public:
     struct not_implemented : error {
-        not_implemented(const std::string& name, const std::string& method);
+        not_implemented(const toolchain& chain, const std::string& method);
     };
+
+    static constexpr struct flags_t {} flags{};
 
     toolchain() = default;
     virtual ~toolchain() = default;
 
-    virtual bool operator==(const toolchain&) const = default;
-    bool is_same_as(const toolchain& other) const;
-
     virtual std::string name() const = 0;
 
-    virtual step& compile_static(
-        const target& target,
-        const std::filesystem::path& source
-    ) const;
+    template<typename S, typename... Args>
+    S& configure(this S& self, Args&&... args) {
+        (self.apply(std::forward<Args>(args)), ...);
+        return self;
+    }
 
-    virtual step& compile_shared(
-        const target& target,
-        const std::filesystem::path& source
-    ) const;
-
-    virtual step& compile_module(
-        const target& target,
-        const std::filesystem::path& source
-    ) const;
-
-    virtual step& link_static(
-        const target& target,
-        const std::vector<std::filesystem::path>& objects,
-        const view<library>& libraries = {}
-    ) const;
-
-    virtual step& link_shared(
-        const target& target,
-        const std::vector<std::filesystem::path>& objects,
-        const view<library>& libraries = {}
-    ) const;
-
-    virtual step& link_archive(
-        const target& target,
-        const std::vector<std::filesystem::path>& objects,
-        const view<library>& libraries = {}
-    ) const;
-
-    virtual step& link_module(
-        const target& target,
-        const std::vector<std::filesystem::path>& objects,
-        const view<library>& libraries = {}
-    ) const;
+    template<std::derived_from<toolchain> T>
+    T& as() { return dynamic_cast<T&>(*this); }
 };
 }
 

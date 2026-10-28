@@ -3,6 +3,7 @@
 #include <ranges>
 
 #include <buildx/this_build.hpp>
+#include <buildx/static_tool.hpp>
 
 namespace bx {
 executable::executable(const std::string& name) : target(name) {}
@@ -22,6 +23,7 @@ command& executable::run() {
 void executable::compile_steps(step& first, step& last) {
     auto compile = [&] (const std::filesystem::path& file) -> step& {
         return tools()
+            .as<static_tool>()
             .compile_static(*this, file)
             .depends_on(first);
     };
@@ -36,6 +38,7 @@ void executable::compile_steps(step& first, step& last) {
         | std::ranges::to<std::vector>();
 
     auto& link = tools()
+        .as<static_tool>()
         .link_static(*this, objects, all_link_libraries())
         .depends_on(steps);
 

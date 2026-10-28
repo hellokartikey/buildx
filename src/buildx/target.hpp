@@ -78,9 +78,9 @@ public:
         return self;
     }
 
-    template <std::derived_from<toolchain> T, typename S, typename... Args>
-    S& use(this S& self, Args&&... args) {
-        self.m_tc = std::make_unique<T>(std::forward<Args>(args)...);
+    template <std::derived_from<toolchain> T, typename S, typename... As>
+    S& use(this S& self, As&&... args) {
+        self.m_tc = std::make_unique<T>(std::forward<As>(args)...);
         return self;
     }
 
@@ -105,7 +105,7 @@ public:
 
     const std::vector<std::filesystem::path>& files() const;
     const std::vector<std::filesystem::path>& headers() const;
-    const toolchain& tools() const;
+    toolchain& tools();
 
     const view<library>& link_libraries() const;
     view<library> all_link_libraries() const;
@@ -115,7 +115,7 @@ protected:
     virtual void compile_steps(step& first, step& last) = 0;
 
 private:
-    std::unique_ptr<class toolchain> m_tc;
+    std::unique_ptr<toolchain> m_tc;
 
     std::vector<std::filesystem::path> m_files;
     std::vector<std::filesystem::path> m_headers;
