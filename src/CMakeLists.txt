@@ -1,4 +1,4 @@
-add_library(libbx)
+add_library(libbx STATIC)
 set_target_properties(libbx PROPERTIES OUTPUT_NAME bx)
 
 target_sources(
@@ -77,7 +77,7 @@ target_sources(
 )
 
 
-target_link_libraries(libbx PRIVATE Boost::process Boost::cobalt)
+target_link_libraries(libbx PRIVATE Boost::process Boost::cobalt archive_static)
 bundle_static_library(libbx bx_bundle)
 
 set(HEADERS_NAME "bx.tar")

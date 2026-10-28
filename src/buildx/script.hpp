@@ -1,6 +1,7 @@
 #ifndef BUILDX_SCRIPT_HPP
 #define BUILDX_SCRIPT_HPP
 
+#include <buildx/exceptions.hpp>
 #include <buildx/executable.hpp>
 
 namespace bx {
@@ -12,6 +13,10 @@ struct embed_file {
 
 class script : public executable {
  public:
+  struct archive_error : error {
+    archive_error(const char* err);
+  };
+
   script(embed_file libbx, embed_file headers);
 
   std::filesystem::path artifact() const override;
