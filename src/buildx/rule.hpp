@@ -1,10 +1,11 @@
 #ifndef BUILDX_RULE_HPP
 #define BUILDX_RULE_HPP
 
-#include <buildx/exceptions.hpp>
-#include <buildx/step.hpp>
 #include <string>
 #include <vector>
+
+#include <buildx/exceptions.hpp>
+#include <buildx/step.hpp>
 
 namespace bx {
 class executor;

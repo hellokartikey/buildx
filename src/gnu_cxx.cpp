@@ -1,7 +1,8 @@
+#include <buildx/tool/gnu_cxx.hpp>
+
 #include <buildx/library.hpp>
 #include <buildx/target.hpp>
 #include <buildx/this_build.hpp>
-#include <buildx/tool/gnu_cxx.hpp>
 
 namespace bx::tool {
 void gnu_cxx::apply(std_f flag) {

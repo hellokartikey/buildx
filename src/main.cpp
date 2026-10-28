@@ -1,6 +1,8 @@
 #include <buildx/build.hpp>
-#include <buildx/this_build.hpp>
+
 #include <print>
+
+#include <buildx/this_build.hpp>
 
 int main(int argc, char** argv) {
   using namespace bx;

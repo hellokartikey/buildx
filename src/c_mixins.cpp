@@ -1,6 +1,7 @@
+#include <buildx/tool/c_mixins.hpp>
+
 #include <buildx/target.hpp>
 #include <buildx/this_build.hpp>
-#include <buildx/tool/c_mixins.hpp>
 
 namespace bx {
 cc_mixin::std_f cc_mixin::std(int v) { return {v}; }

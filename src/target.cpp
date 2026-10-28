@@ -1,5 +1,6 @@
-#include <buildx/library.hpp>
 #include <buildx/target.hpp>
+
+#include <buildx/library.hpp>
 #include <buildx/this_build.hpp>
 
 namespace bx {

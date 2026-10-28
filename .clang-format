@@ -1,6 +1,7 @@
 ---
 Language: Cpp
 BasedOnStyle: Google
+IncludeBlocks: Preserve
 BreakBinaryOperations: OnePerLine
 BreakBeforeBinaryOperators: NonAssignment
 BinPackParameters: OnePerLine

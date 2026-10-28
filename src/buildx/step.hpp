@@ -1,11 +1,12 @@
 #ifndef BUILDX_STEP_HPP
 #define BUILDX_STEP_HPP
 
-#include <buildx/exceptions.hpp>
-#include <buildx/view.hpp>
 #include <filesystem>
 #include <string>
 #include <vector>
+
+#include <buildx/exceptions.hpp>
+#include <buildx/view.hpp>
 
 namespace bx {
 class executor;
@@ -92,6 +93,8 @@ class step {
   std::vector<std::filesystem::path> m_out;
 
   std::string m_message;
+
+  std::function<void(void)> m_func;
 
   int m_rc = -1;
   bool m_phony{};

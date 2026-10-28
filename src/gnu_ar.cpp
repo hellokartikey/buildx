@@ -1,6 +1,8 @@
+#include <buildx/tool/gnu_ar.hpp>
+
 #include <buildx/library.hpp>
 #include <buildx/this_build.hpp>
-#include <buildx/tool/gnu_ar.hpp>
+
 #include <functional>
 
 namespace bx::tool {

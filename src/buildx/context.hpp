@@ -1,13 +1,14 @@
 #ifndef BUILDX_CONTEXT_HPP
 #define BUILDX_CONTEXT_HPP
 
+#include <filesystem>
+#include <list>
+#include <unordered_map>
+
 #include <buildx/exceptions.hpp>
 #include <buildx/phony.hpp>
 #include <buildx/rule.hpp>
 #include <buildx/toolchain.hpp>
-#include <filesystem>
-#include <list>
-#include <unordered_map>
 
 int main(int argc, char** argv);
 

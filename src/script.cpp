@@ -1,7 +1,9 @@
 #include <buildx/script.hpp>
+
+#include <fstream>
+
 #include <buildx/system_library.hpp>
 #include <buildx/this_build.hpp>
-#include <fstream>
 
 namespace bx {
 script::script(embed_file libbx, embed_file headers)

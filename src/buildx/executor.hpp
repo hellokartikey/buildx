@@ -1,10 +1,11 @@
 #ifndef BUILDX_EXECUTOR_HPP
 #define BUILDX_EXECUTOR_HPP
 
-#include <buildx/rule.hpp>
-#include <buildx/step.hpp>
 #include <list>
 #include <thread>
+
+#include <buildx/rule.hpp>
+#include <buildx/step.hpp>
 
 int main(int argc, char** argv);
 

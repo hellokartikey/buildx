@@ -1,13 +1,14 @@
 #ifndef BUILDX_TARGET_HPP
 #define BUILDX_TARGET_HPP
 
-#include <buildx/exceptions.hpp>
-#include <buildx/rule.hpp>
-#include <buildx/toolchain.hpp>
 #include <concepts>
 #include <memory>
 #include <ranges>
 #include <utility>
+
+#include <buildx/exceptions.hpp>
+#include <buildx/rule.hpp>
+#include <buildx/toolchain.hpp>
 
 namespace bx {
 class library;

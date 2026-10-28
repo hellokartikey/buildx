@@ -1,7 +1,8 @@
+#include <buildx/tool/clang_cxx.hpp>
+
 #include <buildx/library.hpp>
 #include <buildx/target.hpp>
 #include <buildx/this_build.hpp>
-#include <buildx/tool/clang_cxx.hpp>
 
 namespace bx::tool {
 void clang_cxx::apply(std_f flag) {

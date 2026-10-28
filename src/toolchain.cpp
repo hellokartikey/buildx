@@ -1,5 +1,6 @@
-#include <buildx/target.hpp>
 #include <buildx/toolchain.hpp>
+
+#include <buildx/target.hpp>
 
 namespace bx {
 toolchain::not_implemented::not_implemented(const toolchain& chain,

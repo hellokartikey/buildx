@@ -1,7 +1,9 @@
 #include <buildx/executable.hpp>
+
+#include <ranges>
+
 #include <buildx/static_tool.hpp>
 #include <buildx/this_build.hpp>
-#include <ranges>
 
 namespace bx {
 executable::executable(const std::string& name) : target(name) {}
