@@ -28,6 +28,7 @@
 #include <buildx/tool/gnu_cc.hpp>
 #include <buildx/tool/gnu_cxx.hpp>
 #include <buildx/tool/llvm_ar.hpp>
+#include <buildx/tool/stack.hpp>
 #include <buildx/toolchain.hpp>
 #include <buildx/view.hpp>
 

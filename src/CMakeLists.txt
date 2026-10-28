@@ -45,6 +45,7 @@ target_sources(
         buildx/tool/gnu_cc.hpp
         buildx/tool/gnu_cxx.hpp
         buildx/tool/llvm_ar.hpp
+        buildx/tool/stack.hpp
 
         buildx/toolchain.hpp
         buildx/archive_tool.hpp

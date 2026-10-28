@@ -1,7 +1,8 @@
 #include <buildx/build.hpp>
 
 void bx::build(context& ctx) {
-    ctx.use<gxx>();
+    using tc = tool::stack<tool::clang_cxx, tool::gnu_ar>;
+    ctx.use<tc>();
 
     auto& foo = ctx
         .add<library>("foo")

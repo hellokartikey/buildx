@@ -3,18 +3,12 @@
 
 #include <buildx/tool/gnu_ar.hpp>
 #include <buildx/tool/gnu_cc.hpp>
+#include <buildx/tool/stack.hpp>
 
 namespace bx {
-struct gcc : tool::gnu_cc, tool::gnu_ar {
-  template <typename... As>
-  gcc(As&&... args) {
-    configure(std::forward<As>(args)...);
-  }
-
+struct gcc : tool::stack<tool::gnu_cc, tool::gnu_ar> {
+  using tool::stack<tool::gnu_cc, tool::gnu_ar>::stack;
   std::string name() const override;
-
-  using gnu_ar::apply;
-  using gnu_cc::apply;
 };
 }  // namespace bx
 

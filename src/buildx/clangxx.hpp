@@ -3,18 +3,12 @@
 
 #include <buildx/tool/clang_cxx.hpp>
 #include <buildx/tool/llvm_ar.hpp>
+#include <buildx/tool/stack.hpp>
 
 namespace bx {
-struct clangxx : tool::clang_cxx, tool::llvm_ar {
-  template <typename... As>
-  clangxx(As&&... args) {
-    configure(std::forward<As>(args)...);
-  }
-
+struct clangxx : tool::stack<tool::clang_cxx, tool::llvm_ar> {
+  using tool::stack<tool::clang_cxx, tool::llvm_ar>::stack;
   std::string name() const override;
-
-  using clang_cxx::apply;
-  using llvm_ar::apply;
 };
 }  // namespace bx
 
