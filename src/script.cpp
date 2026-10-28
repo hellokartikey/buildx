@@ -26,7 +26,8 @@ void script::compile_steps(step& first, step& last) {
                       std::filesystem::create_directories(ctx.scratch_path());
                       std::ofstream libbx_a{ctx.scratch_path() / m_lib.name,
                                             std::ios::binary};
-                      libbx_a.write(m_lib.data, m_lib.size);
+                      libbx_a.write(reinterpret_cast<const char*>(m_lib.data),
+                                    m_lib.size);
                     })
                     .depends_on(first);
 
@@ -37,8 +38,7 @@ void script::compile_steps(step& first, step& last) {
             archive_read_support_format_all(ar);
 
             auto r = archive_read_open_memory(ar, m_head.data, m_head.size);
-            if (r != ARCHIVE_OK)
-              throw archive_error(archive_error_string(ar));
+            if (r != ARCHIVE_OK) throw archive_error(archive_error_string(ar));
 
             {
               std::vector<char> buff;
@@ -55,7 +55,7 @@ void script::compile_steps(step& first, step& last) {
                 std::filesystem::create_directories(path.parent_path());
 
                 std::ofstream out{path};
-                out.write(buff.data(), read);
+                out.write(reinterpret_cast<char*>(buff.data()), read);
               }
             }
 

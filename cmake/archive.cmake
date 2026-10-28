@@ -1,6 +1,6 @@
 include(FetchContent)
 
-set(BUILD_SHAERD_LIBS OFF)
+set(BUILD_SHARED_LIBS OFF)
 
 set(ENABLE_MBEDTLS OFF)
 set(ENABLE_NETTLE OFF)

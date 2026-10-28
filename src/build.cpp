@@ -1,12 +1,12 @@
 #include <buildx/build.hpp>
 
-constexpr char LIBBX_E[] = {
+constexpr std::uint8_t LIBBX_E[] = {
 #embed LIBBX_FILE
 };
 
 constexpr auto LIBBX_S = sizeof(LIBBX_E);
 
-constexpr char HEAD_E[] = {
+constexpr std::uint8_t HEAD_E[] = {
 #embed HEADERS_FILE
 };
 

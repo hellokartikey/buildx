@@ -7,7 +7,7 @@
 namespace bx {
 struct embed_file {
   const char* name;
-  const char* data;
+  const std::uint8_t* data;
   std::size_t size;
 };
 
