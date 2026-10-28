@@ -6,14 +6,16 @@
 
 namespace bx {
 struct gcc : tool::gnu_cc, tool::gnu_ar {
-    template <typename... As>
-    gcc(As&&... args) { configure(std::forward<As>(args)...); }
+  template <typename... As>
+  gcc(As&&... args) {
+    configure(std::forward<As>(args)...);
+  }
 
-    std::string name() const override;
+  std::string name() const override;
 
-    using gnu_cc::apply;
-    using gnu_ar::apply;
+  using gnu_ar::apply;
+  using gnu_cc::apply;
 };
-}
+}  // namespace bx
 
 #endif

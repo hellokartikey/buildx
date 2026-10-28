@@ -2,4 +2,4 @@
 
 namespace bx {
 std::string clang::name() const { return "clang"; }
-}
+}  // namespace bx

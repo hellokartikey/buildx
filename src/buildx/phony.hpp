@@ -5,12 +5,12 @@
 
 namespace bx {
 class phony : public rule {
-public:
-    phony(const std::string& name);
+ public:
+  phony(const std::string& name);
 
-protected:
-    void build_steps(step& first, step& last) override;
+ protected:
+  void build_steps(step& first, step& last) override;
 };
-}
+}  // namespace bx
 
 #endif

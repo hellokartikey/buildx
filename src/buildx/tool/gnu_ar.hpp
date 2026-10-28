@@ -6,20 +6,18 @@
 
 namespace bx::tool {
 class gnu_ar : public archive_tool, public ar_mixin {
-public:
-    void apply(ar_f flag);
+ public:
+  void apply(ar_f flag);
 
-    step& link_archive(
-        const target& target,
-        const std::vector<std::filesystem::path>& objects,
-        const view<library>& libraries = {}
-    ) override;
+  step& link_archive(const target& target,
+                     const std::vector<std::filesystem::path>& objects,
+                     const view<library>& libraries = {}) override;
 
-private:
-    std::string m_exe = "gcc-ar";
+ private:
+  std::string m_exe = "gcc-ar";
 
-    std::vector<std::string> m_ar;
+  std::vector<std::string> m_ar;
 };
-}
+}  // namespace bx::tool
 
 #endif

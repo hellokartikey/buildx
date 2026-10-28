@@ -1,4 +1,9 @@
+---
 Language: Cpp
 BasedOnStyle: Google
 BreakBinaryOperations: OnePerLine
-BreakBeforeBinaryOperators: true
+BreakBeforeBinaryOperators: NonAssignment
+BinPackParameters: OnePerLine
+PackArguments:
+  BinPack: OnePerLine
+...

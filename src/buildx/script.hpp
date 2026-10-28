@@ -5,24 +5,24 @@
 
 namespace bx {
 struct embed_file {
-    const char* name;
-    const char* data;
-    std::size_t size;
+  const char* name;
+  const char* data;
+  std::size_t size;
 };
 
 class script : public executable {
-public:
-    script(embed_file libbx, embed_file headers);
+ public:
+  script(embed_file libbx, embed_file headers);
 
-    std::filesystem::path artifact() const override;
+  std::filesystem::path artifact() const override;
 
-protected:
-    void compile_steps(step& first, step& last) override;
+ protected:
+  void compile_steps(step& first, step& last) override;
 
-private:
-    embed_file m_lib;
-    embed_file m_head;
+ private:
+  embed_file m_lib;
+  embed_file m_head;
 };
-}
+}  // namespace bx
 
 #endif

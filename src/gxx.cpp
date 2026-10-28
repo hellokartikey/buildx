@@ -2,4 +2,4 @@
 
 namespace bx {
 std::string gxx::name() const { return "g++"; }
-}
+}  // namespace bx

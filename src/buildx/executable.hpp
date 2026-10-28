@@ -6,16 +6,16 @@
 
 namespace bx {
 class executable : public target {
-public:
-    executable(const std::string& name);
+ public:
+  executable(const std::string& name);
 
-    std::filesystem::path artifact() const override;
+  std::filesystem::path artifact() const override;
 
-    command& run();
+  command& run();
 
-protected:
-    void compile_steps(step& first, step& last) override;
+ protected:
+  void compile_steps(step& first, step& last) override;
 };
-}
+}  // namespace bx
 
 #endif

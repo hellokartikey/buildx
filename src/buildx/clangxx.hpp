@@ -6,15 +6,16 @@
 
 namespace bx {
 struct clangxx : tool::clang_cxx, tool::llvm_ar {
-public:
-    template <typename... As>
-    clangxx(As&&... args) { configure(std::forward<As>(args)...); }
+  template <typename... As>
+  clangxx(As&&... args) {
+    configure(std::forward<As>(args)...);
+  }
 
-    std::string name() const override;
+  std::string name() const override;
 
-    using clang_cxx::apply;
-    using llvm_ar::apply;
+  using clang_cxx::apply;
+  using llvm_ar::apply;
 };
-}
+}  // namespace bx
 
 #endif

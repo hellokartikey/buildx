@@ -2,14 +2,13 @@
 #define BUILDX_BUILD_HPP
 
 #include <buildx/archive_tool.hpp>
-#include <buildx/toolchain.hpp>
+#include <buildx/clang.hpp>
+#include <buildx/clangxx.hpp>
 #include <buildx/command.hpp>
 #include <buildx/context.hpp>
 #include <buildx/exceptions.hpp>
 #include <buildx/executable.hpp>
 #include <buildx/executor.hpp>
-#include <buildx/clang.hpp>
-#include <buildx/clangxx.hpp>
 #include <buildx/gcc.hpp>
 #include <buildx/gxx.hpp>
 #include <buildx/library.hpp>
@@ -29,6 +28,7 @@
 #include <buildx/tool/gnu_cc.hpp>
 #include <buildx/tool/gnu_cxx.hpp>
 #include <buildx/tool/llvm_ar.hpp>
+#include <buildx/toolchain.hpp>
 #include <buildx/view.hpp>
 
 namespace bx {

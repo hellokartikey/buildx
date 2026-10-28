@@ -7,6 +7,6 @@
 namespace bx::this_build {
 inline context context;
 inline executor executor;
-}
+}  // namespace bx::this_build
 
 #endif

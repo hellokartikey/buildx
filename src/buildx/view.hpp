@@ -8,88 +8,86 @@ namespace bx {
 
 template <typename R>
 concept viewable =
-    std::ranges::input_range<R> &&
-    std::is_lvalue_reference_v<std::ranges::range_reference_t<R>>;
+    std::ranges::input_range<R>
+    && std::is_lvalue_reference_v<std::ranges::range_reference_t<R>>;
 
 template <viewable R>
 using view_t = std::remove_reference_t<std::ranges::range_reference_t<R>>;
 
 template <typename T>
 class view {
-public:
-    using vector = std::vector<T*>;
+ public:
+  using vector = std::vector<T*>;
 
+  using value_type = T;
+  using reference = T&;
+
+  struct iterator {
+    vector::const_iterator iter;
+
+    using difference_type = std::ptrdiff_t;
+    using iterator_concept = std::input_iterator_tag;
     using value_type = T;
     using reference = T&;
 
-    struct iterator {
-        vector::const_iterator iter;
+    T& operator*() const { return **iter; }
 
-        using difference_type = std::ptrdiff_t;
-        using iterator_concept = std::input_iterator_tag;
-        using value_type = T;
-        using reference = T&;
+    iterator& operator++() {
+      iter++;
+      return *this;
+    }
+    iterator operator++(int) { return {.iter = iter++}; }
 
-        T& operator*() const { return **iter; }
+    bool operator==(const iterator&) const = default;
+  };
 
-        iterator& operator++() { iter++; return *this; }
-        iterator operator++(int) { return { .iter = iter++ }; }
+  view() = default;
 
-        bool operator==(const iterator&) const = default;
-    };
+  template <viewable R>
+  view(std::from_range_t, R&& range)
+      : m_vec(std::from_range,
+              std::forward<R>(range)
+                  | std::views::transform([](auto& item) { return &item; })) {}
 
-    view() = default;
+  iterator begin() const { return {.iter = m_vec.begin()}; }
+  iterator end() const { return {.iter = m_vec.end()}; }
 
-    template <viewable R>
-    view(std::from_range_t, R&& range)
-        : m_vec(
-            std::from_range,
-            std::forward<R>(range)
-            | std::views::transform([] (auto& item) { return &item; })
-        ) {}
+  bool empty() const { return m_vec.empty(); }
+  std::size_t size() const { return m_vec.size(); }
 
-    iterator begin() const { return { .iter = m_vec.begin() }; }
-    iterator end() const { return { .iter = m_vec.end() }; }
+  void clear() { m_vec.clear(); }
+  void push_back(T& item) { m_vec.push_back(&item); }
 
-    bool empty() const { return m_vec.empty(); }
-    std::size_t size() const { return m_vec.size(); }
-
-    void clear() { m_vec.clear(); }
-    void push_back(T& item) { m_vec.push_back(&item); }
-
-private:
-    vector m_vec;
+ private:
+  vector m_vec;
 };
 
 template <viewable R>
 view(std::from_range_t, R&& range) -> view<view_t<R>>;
 
 struct as_view_t {
-    template <viewable R>
-    static view<view_t<R>> operator()(R&& range) {
-        return { std::from_range, std::forward<R>(range) };
-    }
+  template <viewable R>
+  static view<view_t<R>> operator()(R&& range) {
+    return {std::from_range, std::forward<R>(range)};
+  }
 };
 
 inline as_view_t as_view;
 
 template <viewable R>
 view<view_t<R>> operator|(R&& range, as_view_t) {
-    return as_view_t::operator()(std::forward<R>(range));
+  return as_view_t::operator()(std::forward<R>(range));
 }
 
 static_assert(std::ranges::range<view<int>>);
 static_assert(std::ranges::input_range<view<int>>);
 static_assert(std::ranges::viewable_range<view<int>>);
 
-static_assert(std::same_as<
-    decltype(
-        std::declval<std::vector<int*>>()
-        | std::views::transform(std::declval<int&(int*)>())
-        | as_view
-    ),
-    view<int>
->);
-}
+static_assert(
+    std::same_as<decltype(std::declval<std::vector<int*>>()
+                          | std::views::transform(std::declval<int&(int*)>())
+                          | as_view),
+                 view<int>>);
+}  // namespace bx
 
 #endif

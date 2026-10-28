@@ -5,11 +5,17 @@ project(buildx)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD 26)
 
-include(cmake/bundle.cmake)
+find_package(ECM REQUIRED)
+set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
 
 set(Boost_USE_STATIC_LIBS ON)
 find_package(Boost COMPONENTS Process Cobalt REQUIRED)
-
 find_package(LibArchive REQUIRED)
+
+include(cmake/bundle.cmake)
+
+include(KDEClangFormat)
+file(GLOB_RECURSE CLANG_FORMAT_FILES src/*.cpp  src/*.hpp)
+kde_clang_format(${CLANG_FORMAT_FILES})
 
 add_subdirectory(src)
