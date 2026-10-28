@@ -38,24 +38,25 @@ void script::compile_steps(step& first, step& last) {
 
             auto r = archive_read_open_memory(ar, m_head.data, m_head.size);
             if (r != ARCHIVE_OK)
-              std::println(stderr, "{}", archive_error_string(ar));
+              throw archive_error(archive_error_string(ar));
 
-            std::string buff;
+            {
+              std::vector<char> buff;
+              archive_entry* entry;
+              while (archive_read_next_header(ar, &entry) == ARCHIVE_OK) {
+                auto size = archive_entry_size(entry);
+                buff.reserve(size);
 
-            archive_entry* entry;
-            while (archive_read_next_header(ar, &entry) == ARCHIVE_OK) {
-              auto size = archive_entry_size(entry);
-              buff.reserve(size);
+                auto read = archive_read_data(ar, buff.data(), buff.capacity());
+                if (read < 0) throw archive_error(archive_error_string(ar));
 
-              auto read = archive_read_data(ar, buff.data(), buff.capacity());
-              if (read < 0) throw archive_error(archive_error_string(ar));
+                auto* name = archive_entry_pathname(entry);
+                auto path = ctx.scratch_path() / std::filesystem::path(name);
+                std::filesystem::create_directories(path.parent_path());
 
-              auto* name = archive_entry_pathname(entry);
-              auto path = ctx.scratch_path() / std::filesystem::path(name);
-              std::filesystem::create_directories(path.parent_path());
-
-              std::ofstream out{path};
-              out.write(buff.data(), read);
+                std::ofstream out{path};
+                out.write(buff.data(), read);
+              }
             }
 
             archive_read_close(ar);
