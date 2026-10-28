@@ -18,9 +18,9 @@ public:
     command& message(const std::string& exe);
     const std::string& message() const;
 
-    template <typename S, typename... Args>
-    S& message(this S& self, std::format_string<Args...> fmt, Args&&... args) {
-        return self.message(std::format(fmt, std::forward<Args>(args)...));
+    template <typename S, typename... As>
+    S& message(this S& self, std::format_string<As...> fmt, As&&... args) {
+        return self.message(std::format(fmt, std::forward<As>(args)...));
     }
 
 protected:

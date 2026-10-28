@@ -8,6 +8,8 @@
 #include <buildx/exceptions.hpp>
 #include <buildx/executable.hpp>
 #include <buildx/executor.hpp>
+#include <buildx/clang.hpp>
+#include <buildx/clangxx.hpp>
 #include <buildx/gcc.hpp>
 #include <buildx/gxx.hpp>
 #include <buildx/library.hpp>
@@ -21,9 +23,12 @@
 #include <buildx/target.hpp>
 #include <buildx/this_build.hpp>
 #include <buildx/tool/c_mixins.hpp>
+#include <buildx/tool/clang_cc.hpp>
+#include <buildx/tool/clang_cxx.hpp>
 #include <buildx/tool/gnu_ar.hpp>
 #include <buildx/tool/gnu_cc.hpp>
 #include <buildx/tool/gnu_cxx.hpp>
+#include <buildx/tool/llvm_ar.hpp>
 #include <buildx/view.hpp>
 
 namespace bx {

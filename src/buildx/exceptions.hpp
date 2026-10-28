@@ -9,9 +9,9 @@ class error : public std::runtime_error {
 public:
     error(const std::string& message);
 
-    template <typename... Args>
-    error(std::format_string<Args...> fmt, Args&&... args)
-        : error(std::format(fmt, std::forward<Args>(args)...)) {}
+    template <typename... As>
+    error(std::format_string<As...> fmt, As&&... args)
+        : error(std::format(fmt, std::forward<As>(args)...)) {}
 };
 }
 

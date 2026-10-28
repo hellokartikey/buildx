@@ -19,9 +19,10 @@ void bx::build(context& ctx) {
             embed_file{ .name = HEADERS_NAME, .data = HEAD_E, .size = HEAD_S }
         )
         .file(ctx.build_script())
-        .use<gxx>(
-            gxx::std(26),
-            gxx::include(ctx.scratch_path() / "include")
+        .use<clangxx>(
+            std::in_place,
+            clangxx::std(26),
+            clangxx::include(ctx.scratch_path() / "include")
         );
 
     char** argv = ctx.argv();

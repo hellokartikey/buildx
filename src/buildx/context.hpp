@@ -15,9 +15,9 @@ namespace bx {
 class context {
 public:
     struct parse_error : error {
-        template <typename... Args>
-        parse_error(std::format_string<Args...> fmt, Args&&... args)
-            : error(std::format(fmt, std::forward<Args>(args)...)) {}
+        template <typename... As>
+        parse_error(std::format_string<As...> fmt, As&&... args)
+            : error(std::format(fmt, std::forward<As>(args)...)) {}
     };
 
     friend int ::main(int argc, char** argv);
@@ -50,10 +50,10 @@ public:
     const std::filesystem::path& scratch_path() const;
     context& scratch_path_prefix(const std::filesystem::path& path);
 
-    template <typename T, typename... Args>
-    T& add(Args&&... args) {
+    template <typename T, typename... As>
+    T& add(As&&... args) {
         auto* ptr = m_rules.emplace_back(
-            std::make_unique<T>(std::forward<Args>(args)...)
+            std::make_unique<T>(std::forward<As>(args)...)
         ).get();
         return *static_cast<T*>(ptr);
     }

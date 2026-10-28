@@ -54,9 +54,9 @@ public:
     step& flags(const std::vector<std::string>& flags);
     const std::vector<std::string>& flags() const;
 
-    template <typename... Args>
-    step& message(std::format_string<Args...> fmt, Args&&... args) {
-        message(std::format(fmt, std::forward<Args>(args)...));
+    template <typename... As>
+    step& message(std::format_string<As...> fmt, As&&... args) {
+        message(std::format(fmt, std::forward<As>(args)...));
         return *this;
     }
 

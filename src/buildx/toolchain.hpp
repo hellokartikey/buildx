@@ -17,9 +17,9 @@ public:
 
     virtual std::string name() const = 0;
 
-    template<typename S, typename... Args>
-    S& configure(this S& self, Args&&... args) {
-        (self.apply(std::forward<Args>(args)), ...);
+    template<typename S, typename... As>
+    S& configure(this S& self, As&&... args) {
+        (self.apply(std::forward<As>(args)), ...);
         return self;
     }
 

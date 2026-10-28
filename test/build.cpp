@@ -1,24 +1,16 @@
 #include <buildx/build.hpp>
 
-#include <buildx/executable.hpp>
-#include <buildx/library.hpp>
-#include <buildx/gcc.hpp>
-
 void bx::build(context& ctx) {
-    auto cc = gcc{
-        gcc::define("FOO")
-    };
-
     auto& foo = ctx
         .add<library>("foo")
-        .files_in(ctx.path("src"), { "foo.c" })
-        .use(cc);
+        .files_in(ctx.path("src"), { "foo.cpp" })
+        .use<clang>(std::in_place, clang::define("FOO"));
 
     auto& main = ctx
         .add<executable>("main")
-        .files_in(ctx.path("src"), { "bar.c", "main.c" })
+        .files_in(ctx.path("src"), { "bar.cpp", "main.cpp" })
         .link(foo)
-        .use(cc);
+        .use<clangxx>(std::in_place, clang::define("FOO"));
 
     auto& run = main.run();
 

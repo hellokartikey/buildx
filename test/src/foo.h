@@ -1,1 +1,1 @@
-int foo();
+extern "C" int foo();

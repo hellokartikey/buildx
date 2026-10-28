@@ -5,9 +5,12 @@ target_sources(
     libbx
     PRIVATE
         c_mixins.cpp
+        clang_cc.cpp
+        clang_cxx.cpp
         gnu_ar.cpp
         gnu_cc.cpp
         gnu_cxx.cpp
+        llvm_ar.cpp
 
         toolchain.cpp
         archive_tool.cpp
@@ -29,14 +32,19 @@ target_sources(
         script.cpp
         system_library.cpp
 
+        clang.cpp
+        clangxx.cpp
         gcc.cpp
         gxx.cpp
 
     PUBLIC FILE_SET HEADERS FILES
         buildx/tool/c_mixins.hpp
         buildx/tool/gnu_ar.hpp
+        buildx/tool/clang_cc.hpp
+        buildx/tool/clang_cxx.hpp
         buildx/tool/gnu_cc.hpp
         buildx/tool/gnu_cxx.hpp
+        buildx/tool/llvm_ar.hpp
 
         buildx/toolchain.hpp
         buildx/archive_tool.hpp
@@ -59,6 +67,8 @@ target_sources(
         buildx/script.hpp
         buildx/system_library.hpp
 
+        buildx/clang.hpp
+        buildx/clangxx.hpp
         buildx/gcc.hpp
         buildx/gxx.hpp
 

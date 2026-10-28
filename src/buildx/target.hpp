@@ -4,6 +4,7 @@
 #include <concepts>
 #include <memory>
 #include <ranges>
+#include <utility>
 
 #include <buildx/exceptions.hpp>
 #include <buildx/rule.hpp>
@@ -79,7 +80,7 @@ public:
     }
 
     template <std::derived_from<toolchain> T, typename S, typename... As>
-    S& use(this S& self, As&&... args) {
+    S& use(this S& self, std::in_place_t, As&&... args) {
         self.m_tc = std::make_unique<T>(std::forward<As>(args)...);
         return self;
     }

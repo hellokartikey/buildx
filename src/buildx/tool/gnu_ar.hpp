@@ -16,7 +16,7 @@ public:
     ) override;
 
 private:
-    std::string m_exe = "ar";
+    std::string m_exe = "gcc-ar";
 
     std::vector<std::string> m_ar;
 };
