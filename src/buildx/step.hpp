@@ -2,6 +2,7 @@
 #define BUILDX_STEP_HPP
 
 #include <filesystem>
+#include <functional>
 #include <string>
 #include <vector>
 
@@ -32,6 +33,7 @@ class step {
 
   step(std::uint64_t id);
   step(std::uint64_t id, const std::string& exe);
+  step(std::uint64_t id, const std::function<void(void)>& func);
 
   ~step() = default;
 
@@ -49,6 +51,8 @@ class step {
   bool is_dependency(const step& other) const;
 
   const std::string& executable() const;
+
+  const std::function<void(void)>& func() const;
 
   step& flag(const std::string& flag);
   step& flags(const std::vector<std::string>& flags);

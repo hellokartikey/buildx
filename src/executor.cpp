@@ -19,12 +19,6 @@ using boost::process::environment::find_executable;
 namespace bx {
 executor::executor(std::uint64_t concurrency) : m_concurrency(concurrency) {}
 
-step& executor::make_step() { return m_steps.emplace_back(m_steps.size()); }
-
-step& executor::make_step(const std::string& exe) {
-  return m_steps.emplace_back(m_steps.size(), exe);
-}
-
 step& executor::operator[](std::uint64_t id) {
   return *std::ranges::find_if(
       m_steps, [=](const auto& step) { return step.m_id == id; });
@@ -56,9 +50,21 @@ void executor::exec_all() {
     }
 
     if (this_build::context.verbose()) {
-      std::print(stderr, "{} ", step.executable());
-      for (auto& flag : step.flags()) std::print(stderr, "{} ", flag);
-      std::println(stderr);
+      if (step.func()) {
+        std::println(stderr, "lambda step");
+      } else {
+        std::string command = step.executable();
+        for (auto& flag : step.flags()) command += " " + flag;
+        std::println(stderr, "{}", command);
+      }
+    }
+
+    if (step.func()) {
+      co_await [&] -> cobalt::task<void> {
+        step.func()();
+        co_return;
+      }();
+      co_return step.m_rc = 0;
     }
 
     auto executable = find_executable(step.executable());

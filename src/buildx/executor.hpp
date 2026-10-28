@@ -23,8 +23,10 @@ class executor {
   executor(executor&&) = delete;
   executor& operator=(executor&&) = delete;
 
-  step& make_step();
-  step& make_step(const std::string& exe);
+  template <typename... As>
+  step& make_step(As&&... args) {
+    return m_steps.emplace_back(m_steps.size(), std::forward<As>(args)...);
+  }
 
   step& operator[](std::uint64_t id);
   const step& operator[](std::uint64_t id) const;

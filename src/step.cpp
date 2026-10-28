@@ -10,6 +10,9 @@ step::step(std::uint64_t id) : m_id(id), m_phony(true) {}
 step::step(std::uint64_t id, const std::string& exe)
     : m_id(id), m_phony(false), m_exe(exe) {}
 
+step::step(std::uint64_t id, const std::function<void(void)>& func)
+    : m_id(id), m_phony(false), m_func(func) {}
+
 bool step::is_phony() const { return m_phony; }
 
 bool step::is_done() const { return m_rc != -1; }
@@ -30,6 +33,8 @@ bool step::is_dependency(const step& other) const {
 }
 
 const std::string& step::executable() const { return m_exe; }
+
+const std::function<void(void)>& step::func() const { return m_func; }
 
 step& step::flag(const std::string& flag) {
   m_flags.push_back(flag);
