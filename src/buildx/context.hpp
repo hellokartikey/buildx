@@ -8,12 +8,17 @@
 #include <buildx/rule.hpp>
 #include <buildx/phony.hpp>
 #include <buildx/exceptions.hpp>
+#include <buildx/toolchain.hpp>
 
 int main(int argc, char** argv);
 
 namespace bx {
 class context {
 public:
+    struct no_toolchain : error {
+        no_toolchain();
+    };
+
     struct parse_error : error {
         template <typename... As>
         parse_error(std::format_string<As...> fmt, As&&... args)
@@ -61,6 +66,20 @@ public:
     context& install(rule& rule);
     phony& install();
 
+    template <std::derived_from<toolchain> T>
+    context& use(const T& tc) {
+        m_tc = std::make_unique<T>(tc);
+        return *this;
+    }
+
+    template <std::derived_from<toolchain> T, typename... As>
+    context& use(std::in_place_t = std::in_place, As&&... args) {
+        m_tc = std::make_unique<T>(std::forward<As>(args)...);
+        return *this;
+    }
+
+    toolchain& tools();
+
     bool verbose() const;
     const std::filesystem::path& build_script() const;
 
@@ -80,6 +99,8 @@ private:
 
     std::list<std::unique_ptr<rule>> m_rules;
     phony m_install{"install"};
+
+    std::unique_ptr<toolchain> m_tc;
 
     int m_argc = 0;
     char** m_argv = nullptr;

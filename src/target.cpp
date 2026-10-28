@@ -1,13 +1,12 @@
 #include <buildx/target.hpp>
 
 #include <buildx/library.hpp>
+#include <buildx/this_build.hpp>
 
 namespace bx {
 target::target(const std::string& name) : rule(name) {}
 
 void target::build_steps(step& first, step& last) {
-    if (not m_tc) throw no_toolchain(*this);
-
     if (files().empty() and headers().empty()) {
         last.depends_on(first);
     } else {
@@ -16,7 +15,7 @@ void target::build_steps(step& first, step& last) {
 }
 
 toolchain& target::tools() {
-    if (not m_tc) throw no_toolchain(*this);
+    if (not m_tc) { return this_build::context.tools(); }
     return *m_tc;
 }
 
@@ -38,7 +37,4 @@ view<library> target::all_link_libraries() const {
                 | std::views::join)
         | as_view;
 }
-
-target::no_toolchain::no_toolchain(const target& target)
-    : error("no toolchain provided for target {:?}", target.name()) {}
 }

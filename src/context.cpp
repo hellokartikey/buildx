@@ -54,8 +54,9 @@ context& context::install(rule& rule) {
 }
 phony& context::install() { return m_install; }
 
-std::string_view consume(int argc, char** argv, int& iter) {
-    return argv[iter++];
+toolchain& context::tools() {
+    if (not m_tc) throw no_toolchain();
+    return *m_tc;
 }
 
 bool context::verbose() const { return m_verbose; }
@@ -65,6 +66,10 @@ const std::filesystem::path& context::build_script() const { return m_script; }
 int context::argc() const { return m_argc; }
 
 char** context::argv() const { return m_argv; }
+
+std::string_view consume(int argc, char** argv, int& iter) {
+    return argv[iter++];
+}
 
 auto split(std::string_view option, char at = '=') {
     auto idx = option.find(at);
@@ -111,4 +116,7 @@ void context::parse(int argc, char** argv) {
         }
     }
 }
+
+context::no_toolchain::no_toolchain()
+    : error("no global toolchain provided") {}
 }

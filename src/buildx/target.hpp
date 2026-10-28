@@ -14,10 +14,6 @@ namespace bx {
 class library;
 class target : public rule {
 public:
-    struct no_toolchain : error {
-        no_toolchain(const target& target);
-    };
-
     target(const std::string& name);
     ~target() override = default;
 

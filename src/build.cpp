@@ -13,17 +13,18 @@ constexpr char HEAD_E[] = {
 constexpr auto HEAD_S = sizeof(HEAD_E);
 
 void bx::build(context& ctx) {
+    ctx.use<clangxx>(
+        std::in_place,
+        clangxx::std(26),
+        clangxx::include(ctx.scratch_path() / "include")
+    );
+
     auto& build = ctx
         .add<script>(
             embed_file{ .name = LIBBX_NAME, .data = LIBBX_E, .size = LIBBX_S },
             embed_file{ .name = HEADERS_NAME, .data = HEAD_E, .size = HEAD_S }
         )
-        .file(ctx.build_script())
-        .use<clangxx>(
-            std::in_place,
-            clangxx::std(26),
-            clangxx::include(ctx.scratch_path() / "include")
-        );
+        .file(ctx.build_script());
 
     char** argv = ctx.argv();
     auto flags = std::views::iota(0, ctx.argc())
