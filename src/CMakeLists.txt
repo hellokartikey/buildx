@@ -109,3 +109,7 @@ target_compile_definitions(
         -DHEADERS_FILE="${HEADERS_FILE}"
         -DHEADERS_NAME="${HEADERS_NAME}"
 )
+
+if (ENABLE_STATIC)
+    target_link_libraries(bx PRIVATE -static)
+endif()
