@@ -11,7 +11,7 @@ class library : public target {
   std::filesystem::path artifact() const override;
 
   template <typename S>
-  S& shared(this S& self, bool value) {
+  S& shared(this S& self, bool value = true) {
     self.m_shared = value;
     return self;
   }

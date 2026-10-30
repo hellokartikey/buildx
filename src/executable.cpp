@@ -22,7 +22,10 @@ command& executable::run() {
 
 void executable::compile_steps(step& first, step& last) {
   auto compile = [&](const std::filesystem::path& file) -> step& {
-    return tools().as<tool::compiler>().compile(*this, file).depends_on(first);
+    return tools()
+        .as<tool::compiler>()
+        .compile(*this, file, all_compile_flags())
+        .depends_on(first);
   };
 
   auto steps = files() | std::views::transform(compile) | as_view;
@@ -34,7 +37,7 @@ void executable::compile_steps(step& first, step& last) {
 
   auto& link = tools()
                    .as<tool::linker>()
-                   .link(*this, objects, all_link_libraries())
+                   .link(*this, objects, all_link_libraries(), all_link_flags())
                    .depends_on(steps);
 
   last.depends_on(link);

@@ -1,9 +1,9 @@
-#include <stdio.h>
+#include <fmt/base.h>
 
 #include "foo.h"
 #include "bar.h"
 
 int main() {
-    printf("Hello %d, World! %d\n", foo(), bar());
+    fmt::println("Hello {}, World {}!", foo(), bar());
     return 0;
 }

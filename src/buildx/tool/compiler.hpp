@@ -9,10 +9,12 @@ namespace bx::tool {
 class compiler : virtual public toolchain {
  public:
   virtual step& compile(const target& target,
-                        const std::filesystem::path& source);
+                        const std::filesystem::path& source,
+                        const std::vector<std::string>& flags = {});
 
   virtual step& compile_shared(const target& target,
-                               const std::filesystem::path& source);
+                               const std::filesystem::path& source,
+                               const std::vector<std::string>& flags = {});
 };
 }  // namespace bx::tool
 

@@ -3,6 +3,8 @@
 void bx::build(context& ctx) {
     ctx.use<gxx>();
 
+    auto& fmt = ctx.add<system_library>("fmt").shared(true);
+
     auto& foo = ctx
         .add<library>("foo")
         .files_in(ctx.path("src"), { "foo.cpp" });
@@ -10,7 +12,7 @@ void bx::build(context& ctx) {
     auto& main = ctx
         .add<executable>("main")
         .files_in(ctx.path("src"), { "bar.cpp", "main.cpp" })
-        .link(foo);
+        .link(foo, fmt);
 
     auto& run = main.run();
 

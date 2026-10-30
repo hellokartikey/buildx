@@ -11,7 +11,8 @@ class llvm_ar : public archiver, public ar_mixin {
 
   step& archive(const target& target,
                 const std::vector<std::filesystem::path>& objects,
-                const view<library>& libraries = {}) override;
+                const view<library>& libraries = {},
+                const std::vector<std::string>& flags = {}) override;
 
  private:
   std::string m_exe = "llvm-ar";

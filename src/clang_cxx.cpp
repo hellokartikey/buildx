@@ -28,7 +28,8 @@ void clang_cxx::apply(ld_f flag) {
 }
 
 step& clang_cxx::compile(const target& target,
-                         const std::filesystem::path& source) {
+                         const std::filesystem::path& source,
+                         const std::vector<std::string>& flags) {
   auto output = to_object(target, source);
   return this_build::executor.make_step(m_exe)
       .message("{} compile {}",
@@ -38,11 +39,13 @@ step& clang_cxx::compile(const target& target,
       .out_flag(output)
       .flag("-c")
       .flags(m_cc)
+      .flags(flags)
       .in_flag(source);
 }
 
 step& clang_cxx::compile_shared(const target& target,
-                                const std::filesystem::path& source) {
+                                const std::filesystem::path& source,
+                                const std::vector<std::string>& flags) {
   auto output = to_object(target, source);
   return this_build::executor.make_step(m_exe)
       .message("{} compile shared {}",
@@ -52,18 +55,21 @@ step& clang_cxx::compile_shared(const target& target,
       .out_flag(output)
       .flag("-c")
       .flags(m_cc)
+      .flags(flags)
       .in_flag(source);
 }
 
 step& clang_cxx::link(const target& target,
                       const std::vector<std::filesystem::path>& objects,
-                      const view<library>& libraries) {
+                      const view<library>& libraries,
+                      const std::vector<std::string>& flags) {
   return this_build::executor.make_step(m_exe)
       .message(
           "{} link {}", name(), std::filesystem::relative(target.artifact()))
       .flag("-o")
       .out_flag(target.artifact())
       .flags(m_ld)
+      .flags(flags)
       .in_flags(objects)
       .in_flags(libraries
                 | std::views::transform(&library::artifact)
@@ -72,7 +78,8 @@ step& clang_cxx::link(const target& target,
 
 step& clang_cxx::link_shared(const target& target,
                              const std::vector<std::filesystem::path>& objects,
-                             const view<library>& libraries) {
+                             const view<library>& libraries,
+                             const std::vector<std::string>& flags) {
   return this_build::executor.make_step(m_exe)
       .message("{} link shared {}",
                name(),
@@ -81,6 +88,7 @@ step& clang_cxx::link_shared(const target& target,
       .out_flag(target.artifact())
       .flag("-shared")
       .flags(m_ld)
+      .flags(flags)
       .in_flags(objects)
       .in_flags(libraries
                 | std::views::transform(&library::artifact)

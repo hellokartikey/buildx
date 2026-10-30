@@ -2,12 +2,14 @@
 
 namespace bx::tool {
 step& compiler::compile(const target& target,
-                        const std::filesystem::path& source) {
+                        const std::filesystem::path& source,
+                        const std::vector<std::string>& flags) {
   throw not_implemented(*this, "compile()");
 }
 
 step& compiler::compile_shared(const target& target,
-                               const std::filesystem::path& source) {
+                               const std::filesystem::path& source,
+                               const std::vector<std::string>& flags) {
   throw not_implemented(*this, "compile_shared()");
 }
 }  // namespace bx::tool

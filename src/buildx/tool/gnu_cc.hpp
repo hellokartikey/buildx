@@ -17,18 +17,22 @@ class gnu_cc : public compiler, public linker, public cc_mixin {
   void apply(ld_f flag);
 
   step& compile(const target& target,
-                const std::filesystem::path& source) override;
+                const std::filesystem::path& source,
+                const std::vector<std::string>& flags = {}) override;
 
   step& compile_shared(const target& target,
-                       const std::filesystem::path& source) override;
+                       const std::filesystem::path& source,
+                       const std::vector<std::string>& flags = {}) override;
 
   step& link(const target& target,
              const std::vector<std::filesystem::path>& objects,
-             const view<library>& libraries = {}) override;
+             const view<library>& libraries = {},
+             const std::vector<std::string>& flags = {}) override;
 
   step& link_shared(const target& target,
                     const std::vector<std::filesystem::path>& objects,
-                    const view<library>& libraries = {}) override;
+                    const view<library>& libraries = {},
+                    const std::vector<std::string>& flags = {}) override;
 
  private:
   std::string m_exe = "gcc";

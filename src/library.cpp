@@ -30,7 +30,7 @@ void library::compile_shared(step& first, step& last) {
   auto compile = [&](const std::filesystem::path& file) -> step& {
     return tools()
         .as<tool::compiler>()
-        .compile_shared(*this, file)
+        .compile_shared(*this, file, all_compile_flags())
         .depends_on(first);
   };
 
@@ -41,17 +41,21 @@ void library::compile_shared(step& first, step& last) {
                  | std::views::join
                  | std::ranges::to<std::vector>();
 
-  auto& link = tools()
-                   .as<tool::linker>()
-                   .link_shared(*this, objects, link_libraries())
-                   .depends_on(steps);
+  auto& link =
+      tools()
+          .as<tool::linker>()
+          .link_shared(*this, objects, all_link_libraries(), all_link_flags())
+          .depends_on(steps);
 
   last.depends_on(link);
 }
 
 void library::compile_archive(step& first, step& last) {
   auto compile = [&](const std::filesystem::path& file) -> step& {
-    return tools().as<tool::compiler>().compile(*this, file).depends_on(first);
+    return tools()
+        .as<tool::compiler>()
+        .compile(*this, file, all_compile_flags())
+        .depends_on(first);
   };
 
   auto steps = files() | std::views::transform(compile) | as_view;
@@ -61,10 +65,11 @@ void library::compile_archive(step& first, step& last) {
                  | std::views::join
                  | std::ranges::to<std::vector>();
 
-  auto& link = tools()
-                   .as<tool::archiver>()
-                   .archive(*this, objects, link_libraries())
-                   .depends_on(steps);
+  auto& link =
+      tools()
+          .as<tool::archiver>()
+          .archive(*this, objects, link_libraries(), all_archive_flags())
+          .depends_on(steps);
 
   last.depends_on(link);
 }
