@@ -1,7 +1,7 @@
 #include <buildx/build.hpp>
 
 void bx::build(context& ctx) {
-    ctx.use<clangxx>();
+    ctx.use<gxx>();
 
     auto& foo = ctx
         .add<library>("foo")

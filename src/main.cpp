@@ -16,10 +16,10 @@ int main(int argc, char** argv) {
     exec.build_steps(ctx.install());
     exec.exec_all();
   } catch (error& e) {
-    std::println(stderr, "[-] buildx error: {}", e.what());
+    std::println(stderr, "- buildx error: {}", e.what());
     return 1;
   } catch (std::exception& e) {
-    std::println(stderr, "[-] error: {}", e.what());
+    std::println(stderr, "- unknown error: {}", e.what());
     return 2;
   }
 

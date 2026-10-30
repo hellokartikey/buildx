@@ -14,8 +14,6 @@
 
 #include <buildx/this_build.hpp>
 
-using boost::process::environment::find_executable;
-
 namespace bx {
 executor::executor(std::uint64_t concurrency) : m_concurrency(concurrency) {}
 
@@ -38,9 +36,10 @@ executor& executor::concurrency(std::uint64_t concurrency) {
 
 void executor::exec_all() {
   namespace cobalt = boost::cobalt;
+  namespace process = boost::process;
   auto async_exec = [](step& step) -> cobalt::task<int> {
     if (not step.is_ready()) throw step::pending_dependencies(step);
-    if (not step.message().empty()) std::println("[+] {}", step.message());
+    if (not step.message().empty()) std::println("+ {}", step.message());
     if (step.is_phony()) co_return step.m_rc = 0;
 
     for (auto& out : step.out_files()) {
@@ -67,13 +66,13 @@ void executor::exec_all() {
       co_return step.m_rc = 0;
     }
 
-    auto executable = find_executable(step.executable());
+    auto executable = process::environment::find_executable(step.executable());
     if (executable.empty()) throw step::executable_not_found(step.executable());
 
-    auto process = boost::process::process(
-        co_await boost::cobalt::this_coro::executor, executable, step.flags());
+    auto process = process::process(
+        co_await cobalt::this_coro::executor, executable, step.flags());
 
-    step.m_rc = co_await process.async_wait(boost::cobalt::use_task);
+    step.m_rc = co_await process.async_wait(cobalt::use_task);
     if (step.rc() != 0) throw step::execution_error(step);
     co_return step.rc();
   };
