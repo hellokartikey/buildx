@@ -1,11 +1,9 @@
-#include <buildx/system_library.hpp>
+#include <buildx/system/library.hpp>
 
-namespace bx {
-system_library::system_library(const std::string& name) : library(name) {
-  shared();
-}
+namespace bx::system {
+library::library(const std::string& name) : bx::library(name) { shared(); }
 
-std::filesystem::path system_library::artifact() const {
+std::filesystem::path library::artifact() const {
   auto file = std::format("lib{}.{}", name(), is_shared() ? "so" : "a");
   auto path = m_prefix / file;
   if (not m_version.empty()) {
@@ -14,11 +12,9 @@ std::filesystem::path system_library::artifact() const {
   return path;
 }
 
-const std::filesystem::path& system_library::path() const { return m_prefix; }
+const std::filesystem::path& library::path() const { return m_prefix; }
 
-const std::string& system_library::version() const { return m_version; }
+const std::string& library::version() const { return m_version; }
 
-void system_library::build_steps(step& first, step& last) {
-  last.depends_on(first);
-}
-}  // namespace bx
+void library::build_steps(step& first, step& last) { last.depends_on(first); }
+}  // namespace bx::system

@@ -1,13 +1,12 @@
 #include <buildx/script.hpp>
 
 #include <fstream>
-#include <print>
 #include <string>
 
 #include <archive.h>
 #include <archive_entry.h>
 
-#include <buildx/system_library.hpp>
+#include <buildx/system/library.hpp>
 #include <buildx/this_build.hpp>
 
 namespace bx {
@@ -63,7 +62,7 @@ void script::compile_steps(step& first, step& last) {
   auto& headers = exec.make_step(extract_headers).depends_on(first);
 
   auto& bx =
-      ctx.add<system_library>("bx").path(ctx.scratch_path()).shared(false);
+      ctx.add<system::library>("bx").path(ctx.scratch_path()).shared(false);
   link(bx);
 
   auto& barrier = exec.make_step().depends_on(headers).depends_on(libbx);

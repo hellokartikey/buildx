@@ -3,10 +3,10 @@
 
 #include <buildx/library.hpp>
 
-namespace bx {
-class system_library : public library {
+namespace bx::system {
+class library : public bx::library {
  public:
-  system_library(const std::string& name);
+  library(const std::string& name);
 
   std::filesystem::path artifact() const override;
 
@@ -32,6 +32,6 @@ class system_library : public library {
   std::filesystem::path m_prefix = "/usr/lib/";
   std::string m_version;
 };
-}  // namespace bx
+}  // namespace bx::system
 
 #endif

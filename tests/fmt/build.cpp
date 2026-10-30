@@ -3,7 +3,7 @@
 void bx::build(context& ctx) {
     ctx.use<gxx>();
 
-    auto& fmt = ctx.add<system_library>("fmt");
+    auto& fmt = ctx.add<system::library>("fmt");
 
     auto& foo = ctx
         .add<library>("foo")

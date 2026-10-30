@@ -66,7 +66,7 @@ target_sources(
         buildx/library.hpp
         buildx/phony.hpp
         buildx/script.hpp
-        buildx/system_library.hpp
+        buildx/system/library.hpp
 
         buildx/clang.hpp
         buildx/clangxx.hpp

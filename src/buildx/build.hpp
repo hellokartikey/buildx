@@ -15,7 +15,7 @@
 #include <buildx/rule.hpp>
 #include <buildx/script.hpp>
 #include <buildx/step.hpp>
-#include <buildx/system_library.hpp>
+#include <buildx/system/library.hpp>
 #include <buildx/target.hpp>
 #include <buildx/this_build.hpp>
 #include <buildx/tool/archiver.hpp>
