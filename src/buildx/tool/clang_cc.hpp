@@ -1,12 +1,12 @@
 #ifndef BUILDX_TOOL_CLANG_CC_HPP
 #define BUILDX_TOOL_CLANG_CC_HPP
 
-#include <buildx/shared_tool.hpp>
-#include <buildx/static_tool.hpp>
 #include <buildx/tool/c_mixins.hpp>
+#include <buildx/tool/compiler.hpp>
+#include <buildx/tool/linker.hpp>
 
 namespace bx::tool {
-class clang_cc : public static_tool, public shared_tool, public cc_mixin {
+class clang_cc : public compiler, public linker, public cc_mixin {
  public:
   void apply(std_f flag);
   void apply(define_f flag);
@@ -16,15 +16,15 @@ class clang_cc : public static_tool, public shared_tool, public cc_mixin {
   void apply(cc_f flag);
   void apply(ld_f flag);
 
-  step& compile_static(const target& target,
-                       const std::filesystem::path& source) override;
+  step& compile(const target& target,
+                const std::filesystem::path& source) override;
 
   step& compile_shared(const target& target,
                        const std::filesystem::path& source) override;
 
-  step& link_static(const target& target,
-                    const std::vector<std::filesystem::path>& objects,
-                    const view<library>& libraries = {}) override;
+  step& link(const target& target,
+             const std::vector<std::filesystem::path>& objects,
+             const view<library>& libraries = {}) override;
 
   step& link_shared(const target& target,
                     const std::vector<std::filesystem::path>& objects,

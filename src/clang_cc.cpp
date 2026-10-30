@@ -27,11 +27,11 @@ void clang_cc::apply(ld_f flag) {
   m_ld.push_back(std::format("-Wl,{}", flag.v));
 }
 
-step& clang_cc::compile_static(const target& target,
-                               const std::filesystem::path& source) {
+step& clang_cc::compile(const target& target,
+                        const std::filesystem::path& source) {
   auto output = to_object(target, source);
   return this_build::executor.make_step(m_exe)
-      .message("{} compile static {}",
+      .message("{} compile {}",
                name(),
                std::filesystem::relative(output, this_build::context.root()))
       .flag("-o")
@@ -55,11 +55,11 @@ step& clang_cc::compile_shared(const target& target,
       .in_flag(source);
 }
 
-step& clang_cc::link_static(const target& target,
+step& clang_cc::link(const target& target,
                             const std::vector<std::filesystem::path>& objects,
                             const view<library>& libraries) {
   return this_build::executor.make_step(m_exe)
-      .message("{} link executable {}",
+      .message("{} link {}",
                name(),
                std::filesystem::relative(target.artifact()))
       .flag("-o")

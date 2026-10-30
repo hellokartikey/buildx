@@ -1,11 +1,11 @@
 #ifndef BUILDX_TOOL_LLVM_AR_HPP
 #define BUILDX_TOOL_LLVM_AR_HPP
 
-#include <buildx/archive_tool.hpp>
+#include <buildx/tool/archiver.hpp>
 #include <buildx/tool/c_mixins.hpp>
 
 namespace bx::tool {
-class llvm_ar : public archive_tool, public ar_mixin {
+class llvm_ar : public archiver, public ar_mixin {
  public:
   void apply(ar_f flag);
 

@@ -1,8 +1,8 @@
 #include <buildx/library.hpp>
 
-#include <buildx/archive_tool.hpp>
-#include <buildx/shared_tool.hpp>
-#include <buildx/static_tool.hpp>
+#include <buildx/tool/compiler.hpp>
+#include <buildx/tool/linker.hpp>
+#include <buildx/tool/archiver.hpp>
 #include <buildx/this_build.hpp>
 #include <buildx/view.hpp>
 
@@ -29,7 +29,7 @@ void library::compile_steps(step& first, step& last) {
 void library::compile_shared(step& first, step& last) {
   auto compile = [&](const std::filesystem::path& file) -> step& {
     return tools()
-        .as<shared_tool>()
+        .as<tool::compiler>()
         .compile_shared(*this, file)
         .depends_on(first);
   };
@@ -42,7 +42,7 @@ void library::compile_shared(step& first, step& last) {
                  | std::ranges::to<std::vector>();
 
   auto& link = tools()
-                   .as<shared_tool>()
+                   .as<tool::linker>()
                    .link_shared(*this, objects, link_libraries())
                    .depends_on(steps);
 
@@ -52,8 +52,8 @@ void library::compile_shared(step& first, step& last) {
 void library::compile_archive(step& first, step& last) {
   auto compile = [&](const std::filesystem::path& file) -> step& {
     return tools()
-        .as<static_tool>()
-        .compile_static(*this, file)
+        .as<tool::compiler>()
+        .compile(*this, file)
         .depends_on(first);
   };
 
@@ -65,7 +65,7 @@ void library::compile_archive(step& first, step& last) {
                  | std::ranges::to<std::vector>();
 
   auto& link = tools()
-                   .as<archive_tool>()
+                   .as<tool::archiver>()
                    .link_archive(*this, objects, link_libraries())
                    .depends_on(steps);
 

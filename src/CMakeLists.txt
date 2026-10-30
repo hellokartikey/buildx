@@ -13,9 +13,9 @@ target_sources(
         llvm_ar.cpp
 
         toolchain.cpp
-        archive_tool.cpp
-        shared_tool.cpp
-        static_tool.cpp
+        archiver.cpp
+        compiler.cpp
+        linker.cpp
 
         context.cpp
         exceptions.cpp
@@ -48,9 +48,9 @@ target_sources(
         buildx/tool/stack.hpp
 
         buildx/toolchain.hpp
-        buildx/archive_tool.hpp
-        buildx/shared_tool.hpp
-        buildx/static_tool.hpp
+        buildx/tool/archiver.hpp
+        buildx/tool/compiler.hpp
+        buildx/tool/linker.hpp
 
         buildx/context.hpp
         buildx/exceptions.hpp

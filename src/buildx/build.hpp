@@ -1,7 +1,6 @@
 #ifndef BUILDX_BUILD_HPP
 #define BUILDX_BUILD_HPP
 
-#include <buildx/archive_tool.hpp>
 #include <buildx/clang.hpp>
 #include <buildx/clangxx.hpp>
 #include <buildx/command.hpp>
@@ -15,12 +14,13 @@
 #include <buildx/phony.hpp>
 #include <buildx/rule.hpp>
 #include <buildx/script.hpp>
-#include <buildx/shared_tool.hpp>
-#include <buildx/static_tool.hpp>
 #include <buildx/step.hpp>
 #include <buildx/system_library.hpp>
 #include <buildx/target.hpp>
 #include <buildx/this_build.hpp>
+#include <buildx/tool/archiver.hpp>
+#include <buildx/tool/compiler.hpp>
+#include <buildx/tool/linker.hpp>
 #include <buildx/tool/c_mixins.hpp>
 #include <buildx/tool/clang_cc.hpp>
 #include <buildx/tool/clang_cxx.hpp>
