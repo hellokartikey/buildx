@@ -2,9 +2,9 @@
 
 #include <ranges>
 
+#include <buildx/this_build.hpp>
 #include <buildx/tool/compiler.hpp>
 #include <buildx/tool/linker.hpp>
-#include <buildx/this_build.hpp>
 
 namespace bx {
 executable::executable(const std::string& name) : target(name) {}
@@ -22,10 +22,7 @@ command& executable::run() {
 
 void executable::compile_steps(step& first, step& last) {
   auto compile = [&](const std::filesystem::path& file) -> step& {
-    return tools()
-        .as<tool::compiler>()
-        .compile(*this, file)
-        .depends_on(first);
+    return tools().as<tool::compiler>().compile(*this, file).depends_on(first);
   };
 
   auto steps = files() | std::views::transform(compile) | as_view;

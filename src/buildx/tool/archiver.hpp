@@ -8,9 +8,9 @@
 namespace bx::tool {
 class archiver : virtual public toolchain {
  public:
-  virtual step& link_archive(const target& target,
-                             const std::vector<std::filesystem::path>& objects,
-                             const view<library>& libraries = {});
+  virtual step& archive(const target& target,
+                        const std::vector<std::filesystem::path>& objects,
+                        const view<library>& libraries = {});
 };
 }  // namespace bx::tool
 

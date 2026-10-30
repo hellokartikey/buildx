@@ -8,13 +8,12 @@
 namespace bx::tool {
 void llvm_ar::apply(ar_f flag) { m_ar.push_back(flag.v); }
 
-step& llvm_ar::link_archive(const target& target,
-                            const std::vector<std::filesystem::path>& objects,
-                            const view<library>& libraries) {
+step& llvm_ar::archive(const target& target,
+                       const std::vector<std::filesystem::path>& objects,
+                       const view<library>& libraries) {
   return this_build::executor.make_step(m_exe)
-      .message("{} link archive {}",
-               name(),
-               std::filesystem::relative(target.artifact()))
+      .message(
+          "{} archive {}", name(), std::filesystem::relative(target.artifact()))
       .flag("rcs")
       .flags(m_ar)
       .out_flag(target.artifact())

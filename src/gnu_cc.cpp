@@ -26,7 +26,7 @@ void gnu_cc::apply(cc_f flag) { m_cc.push_back(flag.v); }
 void gnu_cc::apply(ld_f flag) { m_ld.push_back(std::format("-Wl,{}", flag.v)); }
 
 step& gnu_cc::compile(const target& target,
-                             const std::filesystem::path& source) {
+                      const std::filesystem::path& source) {
   auto output = to_object(target, source);
   return this_build::executor.make_step(m_exe)
       .message("{} compile {}",
@@ -54,12 +54,11 @@ step& gnu_cc::compile_shared(const target& target,
 }
 
 step& gnu_cc::link(const target& target,
-                          const std::vector<std::filesystem::path>& objects,
-                          const view<library>& libraries) {
+                   const std::vector<std::filesystem::path>& objects,
+                   const view<library>& libraries) {
   return this_build::executor.make_step(m_exe)
-      .message("{} link {}",
-               name(),
-               std::filesystem::relative(target.artifact()))
+      .message(
+          "{} link {}", name(), std::filesystem::relative(target.artifact()))
       .flag("-o")
       .out_flag(target.artifact())
       .flags(m_ld)

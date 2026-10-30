@@ -28,7 +28,7 @@ void clang_cxx::apply(ld_f flag) {
 }
 
 step& clang_cxx::compile(const target& target,
-                                const std::filesystem::path& source) {
+                         const std::filesystem::path& source) {
   auto output = to_object(target, source);
   return this_build::executor.make_step(m_exe)
       .message("{} compile {}",
@@ -56,12 +56,11 @@ step& clang_cxx::compile_shared(const target& target,
 }
 
 step& clang_cxx::link(const target& target,
-                             const std::vector<std::filesystem::path>& objects,
-                             const view<library>& libraries) {
+                      const std::vector<std::filesystem::path>& objects,
+                      const view<library>& libraries) {
   return this_build::executor.make_step(m_exe)
-      .message("{} link {}",
-               name(),
-               std::filesystem::relative(target.artifact()))
+      .message(
+          "{} link {}", name(), std::filesystem::relative(target.artifact()))
       .flag("-o")
       .out_flag(target.artifact())
       .flags(m_ld)

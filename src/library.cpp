@@ -1,9 +1,9 @@
 #include <buildx/library.hpp>
 
+#include <buildx/this_build.hpp>
+#include <buildx/tool/archiver.hpp>
 #include <buildx/tool/compiler.hpp>
 #include <buildx/tool/linker.hpp>
-#include <buildx/tool/archiver.hpp>
-#include <buildx/this_build.hpp>
 #include <buildx/view.hpp>
 
 namespace bx {
@@ -51,10 +51,7 @@ void library::compile_shared(step& first, step& last) {
 
 void library::compile_archive(step& first, step& last) {
   auto compile = [&](const std::filesystem::path& file) -> step& {
-    return tools()
-        .as<tool::compiler>()
-        .compile(*this, file)
-        .depends_on(first);
+    return tools().as<tool::compiler>().compile(*this, file).depends_on(first);
   };
 
   auto steps = files() | std::views::transform(compile) | as_view;
@@ -66,7 +63,7 @@ void library::compile_archive(step& first, step& last) {
 
   auto& link = tools()
                    .as<tool::archiver>()
-                   .link_archive(*this, objects, link_libraries())
+                   .archive(*this, objects, link_libraries())
                    .depends_on(steps);
 
   last.depends_on(link);

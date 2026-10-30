@@ -56,12 +56,11 @@ step& clang_cc::compile_shared(const target& target,
 }
 
 step& clang_cc::link(const target& target,
-                            const std::vector<std::filesystem::path>& objects,
-                            const view<library>& libraries) {
+                     const std::vector<std::filesystem::path>& objects,
+                     const view<library>& libraries) {
   return this_build::executor.make_step(m_exe)
-      .message("{} link {}",
-               name(),
-               std::filesystem::relative(target.artifact()))
+      .message(
+          "{} link {}", name(), std::filesystem::relative(target.artifact()))
       .flag("-o")
       .out_flag(target.artifact())
       .flags(m_ld)
