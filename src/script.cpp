@@ -62,7 +62,8 @@ void script::compile_steps(step& first, step& last) {
   auto& libbx = exec.make_step(extract_bx).depends_on(first);
   auto& headers = exec.make_step(extract_headers).depends_on(first);
 
-  auto& bx = ctx.add<system_library>("bx").path(ctx.scratch_path());
+  auto& bx =
+      ctx.add<system_library>("bx").path(ctx.scratch_path()).shared(false);
   link(bx);
 
   auto& barrier = exec.make_step().depends_on(headers).depends_on(libbx);

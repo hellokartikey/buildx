@@ -1,7 +1,9 @@
 #include <buildx/system_library.hpp>
 
 namespace bx {
-system_library::system_library(const std::string& name) : library(name) {}
+system_library::system_library(const std::string& name) : library(name) {
+  shared();
+}
 
 std::filesystem::path system_library::artifact() const {
   auto file = std::format("lib{}.{}", name(), is_shared() ? "so" : "a");

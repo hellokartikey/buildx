@@ -3,7 +3,7 @@
 void bx::build(context& ctx) {
     ctx.use<gxx>();
 
-    auto& fmt = ctx.add<system_library>("fmt").shared(true);
+    auto& fmt = ctx.add<system_library>("fmt");
 
     auto& foo = ctx
         .add<library>("foo")
