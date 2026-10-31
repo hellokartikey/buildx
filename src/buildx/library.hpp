@@ -1,12 +1,13 @@
 #ifndef BUILDX_LIBRARY_HPP
 #define BUILDX_LIBRARY_HPP
 
-#include <buildx/target.hpp>
+#include <buildx/linkable.hpp>
+#include <buildx/source_mixin.hpp>
 
 namespace bx {
-class library : public target {
+class library : public linkable, public source_mixin {
  public:
-  library(const std::string& name);
+  using linkable::linkable;
 
   std::filesystem::path artifact() const override;
 
@@ -19,7 +20,7 @@ class library : public target {
   bool is_shared() const;
 
  protected:
-  void compile_steps(step& first, step& last) override;
+  void build_steps(step& first, step& last) override;
 
   virtual void compile_shared(step& first, step& last);
   virtual void compile_archive(step& first, step& last);

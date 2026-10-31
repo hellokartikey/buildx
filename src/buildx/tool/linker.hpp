@@ -10,12 +10,12 @@ class linker : virtual public toolchain {
  public:
   virtual step& link(const target& target,
                      const std::vector<std::filesystem::path>& objects,
-                     const view<library>& libraries = {},
+                     const view<linkable>& libraries = {},
                      const std::vector<std::string>& flags = {});
 
   virtual step& link_shared(const target& target,
                             const std::vector<std::filesystem::path>& objects,
-                            const view<library>& libraries = {},
+                            const view<linkable>& libraries = {},
                             const std::vector<std::string>& flags = {});
 };
 }  // namespace bx::tool

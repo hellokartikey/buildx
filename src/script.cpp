@@ -17,7 +17,7 @@ std::filesystem::path script::artifact() const {
   return this_build::context.scratch_path(*this) / name();
 }
 
-void script::compile_steps(step& first, step& last) {
+void script::build_steps(step& first, step& last) {
   auto& ctx = this_build::context;
   auto& exec = this_build::executor;
 
@@ -67,7 +67,7 @@ void script::compile_steps(step& first, step& last) {
 
   auto& barrier = exec.make_step().depends_on(headers).depends_on(libbx);
 
-  executable::compile_steps(barrier, last);
+  executable::build_steps(barrier, last);
 }
 
 script::archive_error::archive_error(const char* err) : error(err) {}

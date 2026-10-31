@@ -25,6 +25,7 @@ target_sources(
         main.cpp
 
         target.cpp
+        source_mixin.cpp
         command.cpp
         executable.cpp
         library.cpp
@@ -61,6 +62,8 @@ target_sources(
         buildx/view.hpp
 
         buildx/target.hpp
+        buildx/linkable.hpp
+        buildx/source_mixin.hpp
         buildx/command.hpp
         buildx/executable.hpp
         buildx/library.hpp

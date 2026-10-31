@@ -1,6 +1,6 @@
 #include <buildx/tool/gnu_cc.hpp>
 
-#include <buildx/library.hpp>
+#include <buildx/linkable.hpp>
 #include <buildx/target.hpp>
 #include <buildx/this_build.hpp>
 
@@ -59,7 +59,7 @@ step& gnu_cc::compile_shared(const target& target,
 
 step& gnu_cc::link(const target& target,
                    const std::vector<std::filesystem::path>& objects,
-                   const view<library>& libraries,
+                   const view<linkable>& libraries,
                    const std::vector<std::string>& flags) {
   return this_build::executor.make_step(m_exe)
       .message(
@@ -70,13 +70,13 @@ step& gnu_cc::link(const target& target,
       .flags(flags)
       .in_flags(objects)
       .in_flags(libraries
-                | std::views::transform(&library::artifact)
+                | std::views::transform(&linkable::artifact)
                 | std::ranges::to<std::vector>());
 }
 
 step& gnu_cc::link_shared(const target& target,
                           const std::vector<std::filesystem::path>& objects,
-                          const view<library>& libraries,
+                          const view<linkable>& libraries,
                           const std::vector<std::string>& flags) {
   return this_build::executor.make_step(m_exe)
       .message("{} link shared {}",
@@ -89,7 +89,7 @@ step& gnu_cc::link_shared(const target& target,
       .flags(flags)
       .in_flags(objects)
       .in_flags(libraries
-                | std::views::transform(&library::artifact)
+                | std::views::transform(&linkable::artifact)
                 | std::ranges::to<std::vector>());
 }
 }  // namespace bx::tool

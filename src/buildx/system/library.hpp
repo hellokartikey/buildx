@@ -1,12 +1,12 @@
 #ifndef BUILDX_SYSTEM_LIBRARY_HPP
 #define BUILDX_SYSTEM_LIBRARY_HPP
 
-#include <buildx/library.hpp>
+#include <buildx/linkable.hpp>
 
 namespace bx::system {
-class library : public bx::library {
+class library : public linkable {
  public:
-  library(const std::string& name);
+  using linkable::linkable;
 
   std::filesystem::path artifact() const override;
 
@@ -22,8 +22,15 @@ class library : public bx::library {
     return self;
   }
 
+  template <typename S>
+  S& shared(this S& self, bool value = true) {
+      self.m_shared = value;
+      return self;
+  }
+
   const std::filesystem::path& path() const;
   const std::string& version() const;
+  bool is_shared() const;
 
  protected:
   void build_steps(step& first, step& last) override;
@@ -31,6 +38,7 @@ class library : public bx::library {
  private:
   std::filesystem::path m_prefix = "/usr/lib/";
   std::string m_version;
+  bool m_shared = true;
 };
 }  // namespace bx::system
 

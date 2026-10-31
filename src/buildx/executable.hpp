@@ -3,18 +3,19 @@
 
 #include <buildx/command.hpp>
 #include <buildx/target.hpp>
+#include <buildx/source_mixin.hpp>
 
 namespace bx {
-class executable : public target {
+class executable : public target, public source_mixin {
  public:
-  executable(const std::string& name);
+  using target::target;
 
   std::filesystem::path artifact() const override;
 
   command& run();
 
  protected:
-  void compile_steps(step& first, step& last) override;
+  void build_steps(step& first, step& last) override;
 };
 }  // namespace bx
 

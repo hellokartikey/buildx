@@ -22,7 +22,7 @@ class script : public executable {
   std::filesystem::path artifact() const override;
 
  protected:
-  void compile_steps(step& first, step& last) override;
+  void build_steps(step& first, step& last) override;
 
  private:
   embed_file m_lib;

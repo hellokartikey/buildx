@@ -7,8 +7,6 @@
 #include <buildx/tool/linker.hpp>
 
 namespace bx {
-executable::executable(const std::string& name) : target(name) {}
-
 std::filesystem::path executable::artifact() const {
   return this_build::context.binary_path() / name();
 }
@@ -20,7 +18,9 @@ command& executable::run() {
       .depends_on(*this);
 }
 
-void executable::compile_steps(step& first, step& last) {
+void executable::build_steps(step& first, step& last) {
+  if (files().empty()) throw no_source(*this);
+
   auto compile = [&](const std::filesystem::path& file) -> step& {
     return tools()
         .as<tool::compiler>()

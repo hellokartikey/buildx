@@ -10,7 +10,7 @@ class archiver : virtual public toolchain {
  public:
   virtual step& archive(const target& target,
                         const std::vector<std::filesystem::path>& objects,
-                        const view<library>& libraries = {},
+                        const view<linkable>& libraries = {},
                         const std::vector<std::string>& flags = {});
 };
 }  // namespace bx::tool

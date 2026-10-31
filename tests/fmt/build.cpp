@@ -7,12 +7,18 @@ void bx::build(context& ctx) {
 
     auto& foo = ctx
         .add<library>("foo")
+        .shared()
         .files_in(ctx.path("src"), { "foo.cpp" });
+
+    auto& bar = ctx
+        .add<library>("bar")
+        .link(foo)
+        .files_in(ctx.path("src"), { "bar.cpp" });
 
     auto& main = ctx
         .add<executable>("main")
-        .files_in(ctx.path("src"), { "bar.cpp", "main.cpp" })
-        .link(foo, fmt);
+        .files_in(ctx.path("src"), { "main.cpp" })
+        .link(foo, bar, fmt);
 
     auto& run = main.run();
 

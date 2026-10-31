@@ -1,8 +1,6 @@
 #include <buildx/system/library.hpp>
 
 namespace bx::system {
-library::library(const std::string& name) : bx::library(name) { shared(); }
-
 std::filesystem::path library::artifact() const {
   auto file = std::format("lib{}.{}", name(), is_shared() ? "so" : "a");
   auto path = m_prefix / file;
@@ -15,6 +13,8 @@ std::filesystem::path library::artifact() const {
 const std::filesystem::path& library::path() const { return m_prefix; }
 
 const std::string& library::version() const { return m_version; }
+
+bool library::is_shared() const { return m_shared; }
 
 void library::build_steps(step& first, step& last) { last.depends_on(first); }
 }  // namespace bx::system

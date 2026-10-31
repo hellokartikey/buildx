@@ -11,7 +11,7 @@ class gnu_ar : public archiver, public ar_mixin {
 
   step& archive(const target& target,
                 const std::vector<std::filesystem::path>& objects,
-                const view<library>& libraries = {},
+                const view<linkable>& libraries = {},
                 const std::vector<std::string>& flags = {}) override;
 
  private:

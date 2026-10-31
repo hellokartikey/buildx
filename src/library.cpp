@@ -7,8 +7,6 @@
 #include <buildx/view.hpp>
 
 namespace bx {
-library::library(const std::string& name) : target(name) {}
-
 std::filesystem::path library::artifact() const {
   auto base = this_build::context.library_path();
   if (m_shared) {
@@ -19,7 +17,9 @@ std::filesystem::path library::artifact() const {
 
 bool library::is_shared() const { return m_shared; }
 
-void library::compile_steps(step& first, step& last) {
+void library::build_steps(step& first, step& last) {
+  if (files().empty()) throw no_source(*this);
+
   if (m_shared)
     compile_shared(first, last);
   else

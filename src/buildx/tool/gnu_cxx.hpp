@@ -26,12 +26,12 @@ class gnu_cxx : public compiler, public linker, public cc_mixin {
 
   step& link(const target& target,
              const std::vector<std::filesystem::path>& objects,
-             const view<library>& libraries = {},
+             const view<linkable>& libraries = {},
              const std::vector<std::string>& flags = {}) override;
 
   step& link_shared(const target& target,
                     const std::vector<std::filesystem::path>& objects,
-                    const view<library>& libraries = {},
+                    const view<linkable>& libraries = {},
                     const std::vector<std::string>& flags = {}) override;
 
  private:
