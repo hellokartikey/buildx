@@ -2,8 +2,8 @@
 #define BUILDX_EXECUTABLE_HPP
 
 #include <buildx/command.hpp>
-#include <buildx/target.hpp>
 #include <buildx/source_mixin.hpp>
+#include <buildx/target.hpp>
 
 namespace bx {
 class executable : public target, public source_mixin {

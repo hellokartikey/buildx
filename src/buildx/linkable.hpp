@@ -5,9 +5,9 @@
 
 namespace bx {
 class linkable : public target {
-public:
-    using target::target;
+ public:
+  using target::target;
 };
-}
+}  // namespace bx
 
 #endif

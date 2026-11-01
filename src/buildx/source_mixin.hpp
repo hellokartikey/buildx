@@ -1,8 +1,8 @@
 #ifndef BUILDX_SOURCE_MIXIN_HPP
 #define BUILDX_SOURCE_MIXIN_HPP
 
-#include <memory>
 #include <filesystem>
+#include <memory>
 #include <ranges>
 #include <utility>
 #include <vector>
@@ -12,9 +12,9 @@
 
 namespace bx {
 class source_mixin {
-public:
+ public:
   struct no_source : public error {
-      no_source(const target& target);
+    no_source(const target& target);
   };
 
   template <typename S>
@@ -75,12 +75,12 @@ public:
   const std::vector<std::filesystem::path>& files() const;
   const std::vector<std::filesystem::path>& headers() const;
 
-private:
+ private:
   std::unique_ptr<toolchain> m_tc;
 
   std::vector<std::filesystem::path> m_files;
   std::vector<std::filesystem::path> m_headers;
 };
-}
+}  // namespace bx
 
 #endif

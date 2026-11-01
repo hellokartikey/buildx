@@ -72,6 +72,7 @@ step& gnu_cxx::link(const target& target,
       .flags(flags)
       .in_flags(objects)
       .in_flags(libraries
+                | std::views::filter(&linkable::has_artifact)
                 | std::views::transform(&linkable::artifact)
                 | std::ranges::to<std::vector>());
 }
@@ -91,6 +92,7 @@ step& gnu_cxx::link_shared(const target& target,
       .flags(flags)
       .in_flags(objects)
       .in_flags(libraries
+                | std::views::filter(&linkable::has_artifact)
                 | std::views::transform(&linkable::artifact)
                 | std::ranges::to<std::vector>());
 }

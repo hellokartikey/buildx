@@ -1,20 +1,19 @@
 #ifndef BUILDX_TOOL_GNU_CC_HPP
 #define BUILDX_TOOL_GNU_CC_HPP
 
-#include <buildx/tool/c_mixins.hpp>
-#include <buildx/tool/compiler.hpp>
-#include <buildx/tool/linker.hpp>
+#include <buildx/tool/cc.hpp>
+#include <buildx/tool/ld.hpp>
 
 namespace bx::tool {
-class gnu_cc : public compiler, public linker, public cc_mixin {
+class gnu_cc : public ld, public cc {
  public:
-  void apply(std_f flag);
-  void apply(define_f flag);
-  void apply(define_kv flag);
-  void apply(include_f flag);
+  void apply(std_f flag) override;
+  void apply(define_f flag) override;
+  void apply(define_kv flag) override;
+  void apply(include_f flag) override;
 
-  void apply(cc_f flag);
-  void apply(ld_f flag);
+  void apply(cc_f flag) override;
+  void apply(ld_f flag) override;
 
   step& compile(const target& target,
                 const std::filesystem::path& source,

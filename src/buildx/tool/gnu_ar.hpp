@@ -1,13 +1,12 @@
 #ifndef BUILDX_TOOL_GNU_AR_HPP
 #define BUILDX_TOOL_GNU_AR_HPP
 
-#include <buildx/tool/archiver.hpp>
-#include <buildx/tool/c_mixins.hpp>
+#include <buildx/tool/ar.hpp>
 
 namespace bx::tool {
-class gnu_ar : public archiver, public ar_mixin {
+class gnu_ar : public ar {
  public:
-  void apply(ar_f flag);
+  void apply(ar_f flag) override;
 
   step& archive(const target& target,
                 const std::vector<std::filesystem::path>& objects,

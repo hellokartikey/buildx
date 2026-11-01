@@ -4,7 +4,7 @@
 #include <buildx/this_build.hpp>
 
 namespace bx {
-target::target(const std::string& name) : rule(name) {}
+bool target::has_artifact() const { return true; }
 
 const view<linkable>& target::link_libraries() const { return m_link; }
 

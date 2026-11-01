@@ -20,4 +20,4 @@ const std::vector<std::filesystem::path>& source_mixin::headers() const {
 
 source_mixin::no_source::no_source(const target& target)
     : error("no sources provided for target {}", target.name()) {}
-}
+}  // namespace bx

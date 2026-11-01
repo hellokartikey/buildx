@@ -10,9 +10,9 @@ namespace bx {
 class linkable;
 class target : public rule {
  public:
-  target(const std::string& name);
-  ~target() override = default;
+  using rule::rule;
 
+  virtual bool has_artifact() const;
   virtual std::filesystem::path artifact() const = 0;
 
   template <typename S>

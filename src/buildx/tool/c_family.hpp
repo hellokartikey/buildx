@@ -1,29 +1,30 @@
-#ifndef BUILDX_C_FAMILY_HPP
-#define BUILDX_C_FAMILY_HPP
+#ifndef BUILDX_TOOL_C_FAMILY_HPP
+#define BUILDX_TOOL_C_FAMILY_HPP
+
+#include <filesystem>
+#include <string>
 
 #include <buildx/target.hpp>
-#include <buildx/toolchain.hpp>
 
-namespace bx {
-class cc_mixin {
- public:
+namespace bx::tool {
+struct c_family {
   struct std_f {
     int v;
   };
+
   struct define_f {
     std::string v;
   };
+
   struct define_kv {
     std::string k, v;
   };
+
   struct include_f {
     std::filesystem::path v;
   };
 
   struct cc_f {
-    std::string v;
-  };
-  struct ld_f {
     std::string v;
   };
 
@@ -33,20 +34,16 @@ class cc_mixin {
   static include_f include(const std::filesystem::path& path);
 
   static cc_f c_flag(const std::string& flag);
-  static ld_f l_flag(const std::string& flag);
-};
 
-class ar_mixin {
- public:
-  struct ar_f {
-    std::string v;
-  };
-
-  static ar_f a_flag(const std::string& flag);
+  virtual void apply(std_f flag) = 0;
+  virtual void apply(define_f flag) = 0;
+  virtual void apply(define_kv flag) = 0;
+  virtual void apply(include_f flag) = 0;
+  virtual void apply(cc_f flag) = 0;
 };
 
 std::filesystem::path to_object(const target& target,
                                 const std::filesystem::path& source);
-}  // namespace bx
+}  // namespace bx::tool
 
 #endif

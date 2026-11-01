@@ -24,8 +24,8 @@ class library : public linkable {
 
   template <typename S>
   S& shared(this S& self, bool value = true) {
-      self.m_shared = value;
-      return self;
+    self.m_shared = value;
+    return self;
   }
 
   const std::filesystem::path& path() const;

@@ -4,7 +4,7 @@ set_target_properties(libbx PROPERTIES OUTPUT_NAME bx)
 target_sources(
     libbx
     PRIVATE
-        c_mixins.cpp
+        c_family.cpp
         clang_cc.cpp
         clang_cxx.cpp
         gnu_ar.cpp
@@ -39,7 +39,11 @@ target_sources(
         gxx.cpp
 
     PUBLIC FILE_SET HEADERS FILES
-        buildx/tool/c_mixins.hpp
+        buildx/tool/c_family.hpp
+        buildx/tool/cc.hpp
+        buildx/tool/cxx.hpp
+        buildx/tool/ld.hpp
+        buildx/tool/ar.hpp
         buildx/tool/gnu_ar.hpp
         buildx/tool/clang_cc.hpp
         buildx/tool/clang_cxx.hpp
