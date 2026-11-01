@@ -38,6 +38,10 @@ class rule {
 
  protected:
   virtual void build_steps(step& first, step& last) = 0;
+  bool built() const;
+
+  step& first_step();
+  step& last_step();
 
  private:
   friend class executor;
@@ -46,6 +50,11 @@ class rule {
  private:
   std::string m_name;
   std::vector<rule*> m_depends;
+
+  step* m_first;
+  step* m_last;
+
+  bool m_built = false;
 };
 }  // namespace bx
 

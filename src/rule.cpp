@@ -20,11 +20,25 @@ bool rule::is_dependency(const rule& other) const {
       m_depends, [&](const auto* r) { return r->is_dependency(other); });
 }
 
+bool rule::built() const { return m_built; }
+
+step& rule::first_step() { return *m_first; }
+
+step& rule::last_step() { return *m_last; }
+
 void rule::build_all_steps(step& first, step& last) {
+  m_first = &first;
+  m_last = &last;
   build_steps(first, last);
+  m_built = true;
+
   for (auto* dep : m_depends) {
-    auto& new_step = this_build::executor.make_step();
-    dep->build_all_steps(new_step, first);
+    if (dep->built()) {
+        dep->first_step().depends_on(first);
+    } else {
+        auto& new_step = this_build::executor.make_step();
+        dep->build_all_steps(new_step, first);
+    }
   }
 }
 
