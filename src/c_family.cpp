@@ -19,6 +19,14 @@ c_family::include_f c_family::include(const std::filesystem::path& v) {
 
 c_family::cc_f c_family::c_flag(const std::string& v) { return {v}; }
 
+void c_family::apply(std_f flag) { apply(c_flag(to_string(flag))); }
+
+void c_family::apply(define_f flag) { apply(c_flag(to_string(flag))); }
+
+void c_family::apply(define_kv flag) { apply(c_flag(to_string(flag))); }
+
+void c_family::apply(include_f flag) { apply(c_flag(to_string(flag))); }
+
 std::filesystem::path to_object(const target& target,
                                 const std::filesystem::path& source) {
   auto& ctx = this_build::context;

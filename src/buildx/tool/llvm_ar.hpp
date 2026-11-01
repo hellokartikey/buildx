@@ -6,6 +6,9 @@
 namespace bx::tool {
 class llvm_ar : public ar {
  public:
+  std::string to_string(ar_f flag) const override;
+
+  using ar::apply;
   void apply(ar_f flag) override;
 
   step& archive(const target& target,

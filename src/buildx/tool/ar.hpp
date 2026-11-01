@@ -12,6 +12,8 @@ class ar : public archiver {
     std::string v;
   };
 
+  virtual std::string to_string(ar_f flag) const = 0;
+
   static ar_f a_flag(const std::string& flag);
 
   virtual void apply(ar_f flag) = 0;

@@ -14,6 +14,8 @@ class ld : public linker {
 
   static ld_f l_flag(const std::string& flag);
 
+  virtual std::string to_string(ld_f flag) const = 0;
+
   virtual void apply(ld_f flag) = 0;
 };
 }  // namespace bx::tool

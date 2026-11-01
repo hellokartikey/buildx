@@ -28,17 +28,22 @@ struct c_family {
     std::string v;
   };
 
+  static cc_f c_flag(const std::string& flag);
   static std_f std(int std);
   static define_f define(const std::string& define);
   static define_kv define(const std::string& key, const std::string& value);
   static include_f include(const std::filesystem::path& path);
 
-  static cc_f c_flag(const std::string& flag);
+  virtual std::string to_string(cc_f flag) const = 0;
+  virtual std::string to_string(std_f flag) const = 0;
+  virtual std::string to_string(define_f flag) const = 0;
+  virtual std::string to_string(define_kv flag) const = 0;
+  virtual std::string to_string(include_f flag) const = 0;
 
-  virtual void apply(std_f flag) = 0;
-  virtual void apply(define_f flag) = 0;
-  virtual void apply(define_kv flag) = 0;
-  virtual void apply(include_f flag) = 0;
+  virtual void apply(std_f flag);
+  virtual void apply(define_f flag);
+  virtual void apply(define_kv flag);
+  virtual void apply(include_f flag);
   virtual void apply(cc_f flag) = 0;
 };
 

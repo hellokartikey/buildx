@@ -7,11 +7,15 @@
 namespace bx::tool {
 class clang_cc : public cc, public ld {
  public:
-  void apply(std_f flag) override;
-  void apply(define_f flag) override;
-  void apply(define_kv flag) override;
-  void apply(include_f flag) override;
+  std::string to_string(cc_f flag) const override;
+  std::string to_string(ld_f flag) const override;
+  std::string to_string(std_f flag) const override;
+  std::string to_string(define_f flag) const override;
+  std::string to_string(define_kv flag) const override;
+  std::string to_string(include_f flag) const override;
 
+  using cc::apply;
+  using ld::apply;
   void apply(cc_f flag) override;
   void apply(ld_f flag) override;
 

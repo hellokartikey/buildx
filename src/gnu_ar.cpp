@@ -4,7 +4,9 @@
 #include <buildx/this_build.hpp>
 
 namespace bx::tool {
-void gnu_ar::apply(ar_f flag) { m_ar.push_back(flag.v); }
+std::string gnu_ar::to_string(ar_f flag) const { return flag.v; }
+
+void gnu_ar::apply(ar_f flag) { m_ar.push_back(to_string(flag)); }
 
 step& gnu_ar::archive(const target& target,
                       const std::vector<std::filesystem::path>& objects,

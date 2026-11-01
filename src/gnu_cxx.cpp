@@ -5,27 +5,33 @@
 #include <buildx/this_build.hpp>
 
 namespace bx::tool {
-void gnu_cxx::apply(std_f flag) {
-  m_cc.push_back(std::format("-std=c++{}", flag.v));
+std::string gnu_cxx::to_string(cc_f flag) const {
+    return flag.v;
 }
 
-void gnu_cxx::apply(define_f flag) {
-  m_cc.push_back(std::format("-D{}", flag.v));
+std::string gnu_cxx::to_string(ld_f flag) const {
+    return std::format("-Wl,{}", flag.v);
 }
 
-void gnu_cxx::apply(define_kv flag) {
-  m_cc.push_back(std::format("-D{}={}", flag.k, flag.v));
+std::string gnu_cxx::to_string(std_f flag) const {
+    return std::format("-std=gnu{}", flag.v);
 }
 
-void gnu_cxx::apply(include_f flag) {
-  m_cc.push_back(std::format("-I{}", flag.v));
+std::string gnu_cxx::to_string(define_f flag) const {
+    return std::format("-D{}", flag.v);
 }
 
-void gnu_cxx::apply(cc_f flag) { m_cc.push_back(flag.v); }
-
-void gnu_cxx::apply(ld_f flag) {
-  m_ld.push_back(std::format("-Wl,{}", flag.v));
+std::string gnu_cxx::to_string(define_kv flag) const {
+    return std::format("-D{}={}", flag.k, flag.v);
 }
+
+std::string gnu_cxx::to_string(include_f flag) const {
+    return std::format("-I{}", flag.v);
+}
+
+void gnu_cxx::apply(cc_f flag) { m_cc.push_back(to_string(flag)); }
+
+void gnu_cxx::apply(ld_f flag) { m_ld.push_back(to_string(flag)); }
 
 step& gnu_cxx::compile(const target& target,
                        const std::filesystem::path& source,

@@ -4,7 +4,9 @@
 #include <buildx/this_build.hpp>
 
 namespace bx::tool {
-void llvm_ar::apply(ar_f flag) { m_ar.push_back(flag.v); }
+std::string llvm_ar::to_string(ar_f flag) const { return flag.v; }
+
+void llvm_ar::apply(ar_f flag) { m_ar.push_back(to_string(flag)); }
 
 step& llvm_ar::archive(const target& target,
                        const std::vector<std::filesystem::path>& objects,
