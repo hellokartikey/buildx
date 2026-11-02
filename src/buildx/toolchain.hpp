@@ -21,7 +21,7 @@ class toolchain {
     return self;
   }
 
-  template <std::derived_from<toolchain> T>
+  template <typename T>
   T& as() {
     return dynamic_cast<T&>(*this);
   }

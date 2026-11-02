@@ -72,13 +72,13 @@ class target : public rule {
   }
 
   const std::vector<std::string>& compile_flags() const;
-  std::vector<std::string> all_compile_flags() const;
+  view<const std::vector<std::string>> all_compile_flags() const;
 
   const std::vector<std::string>& link_flags() const;
-  std::vector<std::string> all_link_flags() const;
+  view<const std::vector<std::string>> all_link_flags() const;
 
   const std::vector<std::string>& archive_flags() const;
-  std::vector<std::string> all_archive_flags() const;
+  view<const std::vector<std::string>> all_archive_flags() const;
 
   const view<linkable>& link_libraries() const;
   view<linkable> all_link_libraries() const;

@@ -12,6 +12,7 @@ set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
 
 set(Boost_USE_STATIC_LIBS ON)
 find_package(Boost COMPONENTS Process Cobalt REQUIRED)
+find_package(nlohmann_json REQUIRED)
 
 include(cmake/bundle.cmake)
 include(cmake/archive.cmake)

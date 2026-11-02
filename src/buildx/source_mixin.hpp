@@ -59,25 +59,10 @@ class source_mixin {
     return self;
   }
 
-  template <std::derived_from<toolchain> T, typename S>
-  S& use(this S& self, const T& tc) {
-    self.m_tc = std::make_unique<T>(tc);
-    return self;
-  }
-
-  template <std::derived_from<toolchain> T, typename S, typename... As>
-  S& use(this S& self, std::in_place_t, As&&... args) {
-    self.m_tc = std::make_unique<T>(std::forward<As>(args)...);
-    return self;
-  }
-
-  toolchain& tools();
   const std::vector<std::filesystem::path>& files() const;
   const std::vector<std::filesystem::path>& headers() const;
 
  private:
-  std::unique_ptr<toolchain> m_tc;
-
   std::vector<std::filesystem::path> m_files;
   std::vector<std::filesystem::path> m_headers;
 };

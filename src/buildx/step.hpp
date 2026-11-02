@@ -58,6 +58,10 @@ class step {
   step& flags(const std::vector<std::string>& flags);
   const std::vector<std::string>& flags() const;
 
+  step& dynamic_flags(const std::vector<std::string>& flags);
+  step& dynamic_flags(const view<const std::vector<std::string>>& flags);
+  const view<const std::vector<std::string>>& dynamic_flags() const;
+
   template <typename... As>
   step& message(std::format_string<As...> fmt, As&&... args) {
     message(std::format(fmt, std::forward<As>(args)...));
@@ -92,6 +96,7 @@ class step {
 
   std::string m_exe;
   std::vector<std::string> m_flags;
+  view<const std::vector<std::string>> m_dyn;
 
   std::vector<std::filesystem::path> m_in;
   std::vector<std::filesystem::path> m_out;

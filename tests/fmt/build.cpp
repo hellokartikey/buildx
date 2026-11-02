@@ -3,22 +3,15 @@
 void bx::build(context& ctx) {
     ctx.use<gxx>();
 
-    auto& fmt = ctx.add<system::library>("fmt");
-
-    auto& foo = ctx
-        .add<library>("foo")
-        .shared()
-        .files_in(ctx.path("src"), { "foo.cpp" });
-
-    auto& bar = ctx
-        .add<library>("bar")
-        .link(foo)
-        .files_in(ctx.path("src"), { "bar.cpp" });
+    auto& fmt = ctx
+        .add<cmake::package>("fmt")
+        .find_package("fmt")
+        .target("fmt::fmt");
 
     auto& main = ctx
         .add<executable>("main")
-        .files_in(ctx.path("src"), { "main.cpp" })
-        .link(foo, bar, fmt);
+        .files_in(ctx.path("src"), { "main.cpp" , "foo.cpp", "bar.cpp" })
+        .link(fmt);
 
     auto& run = main.run();
 

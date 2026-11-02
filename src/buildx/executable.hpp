@@ -4,9 +4,10 @@
 #include <buildx/command.hpp>
 #include <buildx/source_mixin.hpp>
 #include <buildx/target.hpp>
+#include <buildx/tool_mixin.hpp>
 
 namespace bx {
-class executable : public target, public source_mixin {
+class executable : public target, public source_mixin, public tool_mixin {
  public:
   using target::target;
 

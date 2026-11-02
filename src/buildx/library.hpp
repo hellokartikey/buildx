@@ -3,9 +3,10 @@
 
 #include <buildx/linkable.hpp>
 #include <buildx/source_mixin.hpp>
+#include <buildx/tool_mixin.hpp>
 
 namespace bx {
-class library : public linkable, public source_mixin {
+class library : public linkable, public source_mixin, public tool_mixin {
  public:
   using linkable::linkable;
 

@@ -3,13 +3,6 @@
 #include <buildx/this_build.hpp>
 
 namespace bx {
-toolchain& source_mixin::tools() {
-  if (not m_tc) {
-    return this_build::context.tools();
-  }
-  return *m_tc;
-}
-
 const std::vector<std::filesystem::path>& source_mixin::files() const {
   return m_files;
 }

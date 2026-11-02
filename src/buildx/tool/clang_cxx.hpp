@@ -7,6 +7,7 @@
 namespace bx::tool {
 class clang_cxx : public cxx, public ld {
  public:
+  std::string to_string(link_f flag) const override;
   std::string to_string(ld_f flag) const override;
   std::string to_string(cc_f flag) const override;
   std::string to_string(std_f flag) const override;
@@ -19,23 +20,26 @@ class clang_cxx : public cxx, public ld {
   void apply(cc_f flag) override;
   void apply(ld_f flag) override;
 
-  step& compile(const target& target,
-                const std::filesystem::path& source,
-                const std::vector<std::string>& flags = {}) override;
+  step& compile(
+      const target& target,
+      const std::filesystem::path& source,
+      const view<const std::vector<std::string>>& flags = {}) override;
 
-  step& compile_shared(const target& target,
-                       const std::filesystem::path& source,
-                       const std::vector<std::string>& flags = {}) override;
+  step& compile_shared(
+      const target& target,
+      const std::filesystem::path& source,
+      const view<const std::vector<std::string>>& flags = {}) override;
 
   step& link(const target& target,
              const std::vector<std::filesystem::path>& objects,
              const view<linkable>& libraries = {},
-             const std::vector<std::string>& flags = {}) override;
+             const view<const std::vector<std::string>>& flags = {}) override;
 
-  step& link_shared(const target& target,
-                    const std::vector<std::filesystem::path>& objects,
-                    const view<linkable>& libraries = {},
-                    const std::vector<std::string>& flags = {}) override;
+  step& link_shared(
+      const target& target,
+      const std::vector<std::filesystem::path>& objects,
+      const view<linkable>& libraries = {},
+      const view<const std::vector<std::string>>& flags = {}) override;
 
  private:
   std::string m_exe = "clang++";

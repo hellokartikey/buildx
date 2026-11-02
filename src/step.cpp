@@ -48,6 +48,20 @@ step& step::flags(const std::vector<std::string>& flags) {
 
 const std::vector<std::string>& step::flags() const { return m_flags; }
 
+step& step::dynamic_flags(const std::vector<std::string>& flags) {
+  m_dyn.push_back(flags);
+  return *this;
+}
+
+step& step::dynamic_flags(const view<const std::vector<std::string>>& flags) {
+  for (auto& flag : flags) m_dyn.push_back(flag);
+  return *this;
+}
+
+const view<const std::vector<std::string>>& step::dynamic_flags() const {
+  return m_dyn;
+}
+
 step& step::message(const std::string& message) {
   m_message = message;
   return *this;
@@ -128,7 +142,11 @@ step::executable_not_found::executable_not_found(const std::string exe)
     : error("executable {:?} not found.", exe) {}
 
 step::cycle_detected::cycle_detected(const step& parent, const step& child)
-    : error("cycle detected from {:?} to {:?}.", parent.m_exe, child.m_exe) {}
+    : error("cycle detected from ({}) {:?} to ({}) {:?}.",
+            parent.m_id,
+            parent.m_exe,
+            child.m_id,
+            child.m_exe) {}
 
 step::pending_dependencies::pending_dependencies(const step& step)
     : error("{:?} dependencies are still pending.", step.m_exe) {}

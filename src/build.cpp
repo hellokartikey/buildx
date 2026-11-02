@@ -1,5 +1,7 @@
 #include <buildx/build.hpp>
 
+#include <print>
+
 constexpr std::uint8_t LIBBX_E[] = {
 #embed LIBBX_FILE
 };
@@ -13,9 +15,9 @@ constexpr std::uint8_t HEAD_E[] = {
 constexpr auto HEAD_S = sizeof(HEAD_E);
 
 void bx::build(context& ctx) {
-  ctx.use<clangxx>(std::in_place,
-                   clangxx::std(26),
-                   clangxx::include(ctx.scratch_path() / "include"));
+  ctx.use<gxx>(std::in_place,
+               gxx::std(26),
+               gxx::include(ctx.scratch_path() / "include"));
 
   auto& build =
       ctx.add<script>(

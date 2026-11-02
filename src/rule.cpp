@@ -34,7 +34,7 @@ void rule::build_all_steps(step& first, step& last) {
 
   for (auto* dep : m_depends) {
     if (dep->built()) {
-      dep->first_step().depends_on(first);
+      first.depends_on(dep->last_step());
     } else {
       auto& new_step = this_build::executor.make_step();
       dep->build_all_steps(new_step, first);

@@ -3,6 +3,7 @@
 
 #include <buildx/clang.hpp>
 #include <buildx/clangxx.hpp>
+#include <buildx/cmake/package.hpp>
 #include <buildx/command.hpp>
 #include <buildx/context.hpp>
 #include <buildx/exceptions.hpp>

@@ -11,10 +11,11 @@ class llvm_ar : public ar {
   using ar::apply;
   void apply(ar_f flag) override;
 
-  step& archive(const target& target,
-                const std::vector<std::filesystem::path>& objects,
-                const view<linkable>& libraries = {},
-                const std::vector<std::string>& flags = {}) override;
+  step& archive(
+      const target& target,
+      const std::vector<std::filesystem::path>& objects,
+      const view<linkable>& libraries = {},
+      const view<const std::vector<std::string>>& flags = {}) override;
 
  private:
   std::string m_exe = "llvm-ar";

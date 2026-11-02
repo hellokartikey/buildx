@@ -4,7 +4,7 @@ namespace bx::tool {
 step& archiver::archive(const target& target,
                         const std::vector<std::filesystem::path>& objects,
                         const view<linkable>& libraries,
-                        const std::vector<std::string>& flags) {
+                        const view<const std::vector<std::string>>& flags) {
   throw not_implemented(*this, "archive()");
 }
 }  // namespace bx::tool

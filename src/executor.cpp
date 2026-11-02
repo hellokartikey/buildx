@@ -52,8 +52,10 @@ void executor::exec_all() {
       if (step.func()) {
         std::println(stderr, "lambda step");
       } else {
+        auto flags = step.flags();
+        flags.append_range(step.dynamic_flags() | std::views::join);
         std::string command = step.executable();
-        for (auto& flag : step.flags()) command += " " + flag;
+        for (auto& flag : flags) command += " " + flag;
         std::println(stderr, "{}", command);
       }
     }
@@ -69,8 +71,10 @@ void executor::exec_all() {
     auto executable = process::environment::find_executable(step.executable());
     if (executable.empty()) throw step::executable_not_found(step.executable());
 
+    auto flags = step.flags();
+    flags.append_range(step.dynamic_flags() | std::views::join);
     auto process = process::process(
-        co_await cobalt::this_coro::executor, executable, step.flags());
+        co_await cobalt::this_coro::executor, executable, flags);
 
     step.m_rc = co_await process.async_wait(cobalt::use_task);
     if (step.rc() != 0) throw step::execution_error(step);

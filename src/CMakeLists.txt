@@ -4,6 +4,8 @@ set_target_properties(libbx PROPERTIES OUTPUT_NAME bx)
 target_sources(
     libbx
     PRIVATE
+        ld.cpp
+        ar.cpp
         c_family.cpp
         clang_cc.cpp
         clang_cxx.cpp
@@ -26,12 +28,14 @@ target_sources(
 
         target.cpp
         source_mixin.cpp
+        tool_mixin.cpp
         command.cpp
         executable.cpp
         library.cpp
         phony.cpp
         script.cpp
         system_library.cpp
+        cmake_package.cpp
 
         clang.cpp
         clangxx.cpp
@@ -68,12 +72,14 @@ target_sources(
         buildx/target.hpp
         buildx/linkable.hpp
         buildx/source_mixin.hpp
+        buildx/tool_mixin.hpp
         buildx/command.hpp
         buildx/executable.hpp
         buildx/library.hpp
         buildx/phony.hpp
         buildx/script.hpp
         buildx/system/library.hpp
+        buildx/cmake/package.hpp
 
         buildx/clang.hpp
         buildx/clangxx.hpp
@@ -84,7 +90,15 @@ target_sources(
 )
 
 
-target_link_libraries(libbx PRIVATE Boost::process Boost::cobalt archive_static)
+target_link_libraries(
+    libbx
+    PRIVATE
+        Boost::process
+        Boost::cobalt
+        nlohmann_json::nlohmann_json
+        archive_static
+)
+
 bundle_static_library(libbx bx_bundle)
 
 set(HEADERS_NAME "bx.tar")
